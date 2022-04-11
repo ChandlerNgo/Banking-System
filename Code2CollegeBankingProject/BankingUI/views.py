@@ -3,11 +3,13 @@ from django.http import HttpResponse
 from django.template import loader
 
 def index(request):
-  template = loader.get_template('index.html')
-  return HttpResponse(template.render())
+    template = loader.get_template('index.html')
+    return HttpResponse(template.render())
 
 def createaccount(request):
-    return render(request, 'createaccount.html')
+    template = loader.get_template('createaccount.html')
+    return HttpResponse(template.render())
 
 def forgotpassword(request):
-    return render(request, 'forgotpassword.html')
+    template = loader.get_template('forgotpassword.html')
+    return HttpResponse(template.render())
