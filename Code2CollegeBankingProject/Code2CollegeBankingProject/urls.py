@@ -5,5 +5,6 @@ urlpatterns = [
     path('BankingUI/', include('BankingUI.urls')),
     path('admin/', admin.site.urls),
     path('BankingUI/createaccount',views.createaccount, name='createaccount'),
-    path('forgotpassword',views.forgotpassword, name='forgotpassword')
+    path('BankingUI/forgotpassword',views.forgotpassword, name='forgotpassword'),
+    path('BankingUI/index',views.index, name='index')
 ]

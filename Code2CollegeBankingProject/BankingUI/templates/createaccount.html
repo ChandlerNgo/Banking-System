@@ -7,7 +7,7 @@
   <title>Banking Login</title>
   <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
-
+<center>
 <body>
   <table>
     <tr>
@@ -15,34 +15,41 @@
     </tr>
     <tr>
       <td colspan="2">
-        <form>
+        <form method="POST" action="">
           <label for="firstname">First Name:</label><br>
           <input type="text" id="firstname" name="firstname"></input><br>
+
           <label for="lastname">Last Name:</label><br>
           <input type="text" id="lastname" name="lastname"></input><br>
+
           <label for="email">Email:</label><br>
           <input type="email" id="email" name="email"></input><br>
+
           <label for="username">Username</label><br>
           <input type="text" id="username" name="username"></input><br>
+
           <label for="pinnumber">Pin</label><br>
           <input type="text" maxlength="4" size="3" id="pinnumber" name="pinnumber"></input><br>
+
           <label for="password">Password:</label><br>
           <input type="password" id="password" name="password"></input><br>
+
           <label for="confirmpassword">Confirm Password:</label><br>
           <input type="password" id="confirmpassword" name="confirmpassword"></input><br>
+
           <button id="submit" type="submit">Create an account</button><br>
         </form>
       </td>
     </tr>
     <tr>
       <td>
-        <a href="index.html"><button>Sign In</button></a>
+        <a href="index"><button>Sign In</button></a>
       </td>
       <td>
-        <a href="forgotpassword.html"><button>Forgot Password</button></a>
+        <a href="forgotpassword"><button>Forgot Password</button></a>
       </td>
     </tr>
   </table>
 </body>
-
+</center>
 </html>
