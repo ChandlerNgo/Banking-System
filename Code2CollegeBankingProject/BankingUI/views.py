@@ -13,3 +13,15 @@ def createaccount(request):
 def forgotpassword(request):
     template = loader.get_template('forgotpassword.html')
     return HttpResponse(template.render())
+
+def account(request):
+    template = loader.get_template('account.html')
+    return HttpResponse(template.render())
+
+def createaccountinfo(request):
+    template = loader.get_template('createaccountinfo.html')
+    return HttpResponse(template.render())
+
+def changemoney(request):
+    template = loader.get_template('changemoney.html')
+    return HttpResponse(template.render())

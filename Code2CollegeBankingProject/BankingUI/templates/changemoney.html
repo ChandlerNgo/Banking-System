@@ -1,0 +1,22 @@
+<html>
+  <body>
+    <form method="POST" action="account">
+    <!-- 
+      Would you like to withdraw or deposit
+      take the money and add/subtract from acc.
+
+      Would you like to delete this acc.
+      [include an are you sure message]
+     -->
+      <label>Would you like to deposit or withdraw money?</label>
+      <input type="radio" id="deposit" name="deposit"></input>
+      <label>Deposit</label>
+      <input type="radio" id="withdraw" name="withdraw"></input>
+      <label>Withdraw</label><br><br>
+
+      <label>Amount you want to exchange</label>
+      <input type="number" id="amount" name="amount"></input><br>
+      <button id="submit" type="submit"></button>
+    </form>
+  </body>
+</html>
