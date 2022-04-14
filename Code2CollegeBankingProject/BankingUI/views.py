@@ -18,8 +18,8 @@ def account(request):
     template = loader.get_template('account.html')
     return HttpResponse(template.render())
 
-def createaccountinfo(request):
-    template = loader.get_template('createaccountinfo.html')
+def changeaccountinfo(request):
+    template = loader.get_template('changeaccountinfo.html')
     return HttpResponse(template.render())
 
 def changemoney(request):
