@@ -1,6 +1,7 @@
 <html>
   <body>
     <form method="POST" action="account">
+      {% csrf_token %}
     <!-- 
       Would you like to withdraw or deposit
       take the money and add/subtract from acc.

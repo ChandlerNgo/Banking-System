@@ -13,6 +13,7 @@
       edit and save.. sends back to account.html
    -->
   <form method="POST" action="account">
+    {% csrf_token %}
     <label for="firstname">First Name:</label><br>
     <input type="text" id="firstname" name="firstname" placeholder="First Name"></input><br>
 
