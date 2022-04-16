@@ -14,17 +14,13 @@
    -->
   <form method="POST" action="account">
     {% csrf_token %}
-    <label for="firstname">First Name:</label><br>
     <input type="text" id="firstname" name="firstname" placeholder="First Name"></input><br>
 
-    <label for="lastname">Last Name:</label><br>
-    <input type="text" id="lastname" name="lastname"></input><br>
+    <input type="text" id="lastname" name="lastname" placeholder="last Name"></input><br>
 
-    <label for="email">Email:</label><br>
-    <input type="email" id="email" name="email"></input><br>
+    <input type="email" id="email" name="email" placeholder="Email"></input><br>
 
-    <label for="username">Username</label><br>
-    <input type="text" id="username" name="username"></input><br>
+    <input type="text" id="username" name="username" placeholder="Username"></input><br>
     
     <button id="submit" type="submit">Save Changes</button><br>
   </form>

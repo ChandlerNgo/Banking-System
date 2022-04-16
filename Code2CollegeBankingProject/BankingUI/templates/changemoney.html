@@ -10,14 +10,11 @@
       [include an are you sure message]
      -->
       <label>Would you like to deposit or withdraw money?</label>
-      <input type="radio" id="deposit" name="deposit"></input>
-      <label>Deposit</label>
-      <input type="radio" id="withdraw" name="withdraw"></input>
-      <label>Withdraw</label><br><br>
+      <input type="radio" id="deposit" name="depositorwithdraw">Deposit</input>
+      <input type="radio" id="withdraw" name="depositorwithdraw">Withdraw</input><br>
 
-      <label>Amount you want to exchange</label>
-      <input type="number" id="amount" name="amount"></input><br>
-      <button id="submit" type="submit"></button>
+      <input type="number" id="amount" name="amount" min="0" placeholder="Amount"></input><br>
+      <button id="submit" type="submit">Deposit/withdraw your money</button>
     </form>
   </body>
 </html>

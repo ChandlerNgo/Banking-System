@@ -1,27 +1,40 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.template import loader
+from .FormFunctions.createaccount import savenewaccountinfo
+from .models import Customer,BankInfo,Transactions
 
 def index(request):
-    template = loader.get_template('index.html')
-    return HttpResponse(template.render())
+    return render(request,'index.html')
 
 def createaccount(request):
-    template = loader.get_template('createaccount.html')
-    return HttpResponse(template.render())
+    if request.method == "POST":
+        firstname = request.POST["firstname"]
+        lastname = request.POST["lastname"]
+        email = request.POST["email"]
+        birthday = request.POST["birthday"]
+        username = request.POST["firstname"]
+        pinnumber = request.POST["pinnumber"]
+        password = request.POST["password"]
+        confirmpassword = request.POST["confirmpassword"]
+        if password != confirmpassword:
+            return HttpResponse(confirmpassword + password)
+        newcustomer = Customer(first_name = firstname,last_name = lastname,birthday = birthday,email = email)
+        newcustomer.save()
+        newbankinfo = BankInfo(pin_number = pinnumber, username = username,password = password, customer_info=Customer()) 
+        newbankinfo.save()
+        # id is not included in the newbankinfo, so it throws a mean error
+    return render(request,'createaccount.html')
 
 def forgotpassword(request):
-    template = loader.get_template('forgotpassword.html')
-    return HttpResponse(template.render())
+    return render(request,'forgotpassword.html')
 
 def account(request):
-    template = loader.get_template('account.html')
-    return HttpResponse(template.render())
+    return render(request,'account.html')
 
 def changeaccountinfo(request):
-    template = loader.get_template('changeaccountinfo.html')
-    return HttpResponse(template.render())
+    return render(request,'changeaccountinfo.html')
 
 def changemoney(request):
-    template = loader.get_template('changemoney.html')
-    return HttpResponse(template.render())
+    return render(request,'changemoney.html')
+
+# add required field into the end of html forms after testing

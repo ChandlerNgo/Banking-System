@@ -11,6 +11,7 @@ class Customer(models.Model):
 class BankInfo(models.Model):
     pin_number = models.IntegerField()
     username = models.CharField(max_length=30)
+    password = models.TextField(max_length=30)
     customer_info = models.ForeignKey(Customer,on_delete=models.CASCADE)
     
 class Transactions(models.Model):

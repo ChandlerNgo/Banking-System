@@ -18,11 +18,9 @@
         <!-- if login fails, load index.html else redirect to account.html -->
         <form method="POST" action="">
           {% csrf_token %}
-          <label for="username">Username:</label><br>
-          <input type="text" id="username" name="username"></input><br>
+          <input type="text" id="username" name="username" placeholder="Username"></input><br>
 
-          <label for="username">Password:</label><br>
-          <input type="password" id="password" name="password"></input><br>
+          <input type="password" id="password" name="password" placeholder="Password"></input><br>
           
           <button id="submit" type="submit">Login</button><br>
         </form>
