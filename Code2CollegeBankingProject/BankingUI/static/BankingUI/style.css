@@ -1,0 +1,19 @@
+body{
+    background-color: green;
+}
+
+.container {
+    position: relative;
+    height: 70em;
+  }
+  
+  .loginbox {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: aqua;
+    width:20%;
+    text-align: center;
+    height:50%
+  }
