@@ -1,19 +1,52 @@
 body{
-    background-color: green;
+    background-color: rgb(226, 198, 163);
+}
+  
+.loginbox {
+  display:grid;
+  width:30%;
+  justify-content: center;
+  position: absolute;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  height: 30vh;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr;
 }
 
-.container {
-    position: relative;
-    height: 70em;
-  }
-  
-  .loginbox {
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: aqua;
-    width:20%;
-    text-align: center;
-    height:50%
-  }
+.logintext{
+  display:grid;
+  justify-content: center;
+}
+
+.submit,.username,.password,.createaccount{
+  display:grid;
+  justify-content: center;
+  align-content: center;
+  grid-template-rows: .8fr;
+  grid-template-columns: .8fr;
+}
+
+.submit > *,.createaccount > *{
+  border-radius: 25px;
+  border-color: rgb(219, 169, 107);
+}
+
+.forgotpassword{
+  display:grid;
+  justify-content: end;
+  height:10%;
+  padding-right: 3%;
+}
+
+a:link,a:visited,a:active {
+  color: black;
+  text-decoration: none;
+}
+
+a:hover {
+  color: rgb(147, 111, 67);
+}

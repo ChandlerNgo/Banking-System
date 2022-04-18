@@ -9,28 +9,28 @@
   <link rel="stylesheet" type="text/css" href="{% static 'BankingUI/style.css' %}">
 </head>
 <body>
-  <div class="container">
-    <div class="loginbox">
-    <p class="login">Login</p>
-    <div class="info">
-        <form method="POST" action="">
-          {% csrf_token %}
-        <input type="text" id="username" name="username" placeholder="Username"></input>
-        <input type="password" id="password" name="password" placeholder="Password"></input>
-        <div class="submit">
-          <button id="submit" type="submit">Login</button>
-        </div>
-        
+  <form method="POST" action="">
+      {% csrf_token %}
+  <div class="loginbox">
+    <div class="logintext">
+      <h1>Welcome to Chandler's Bank</h1>
     </div>
-    <div class="forgotpassword">
-      <button><a href="forgotpassword">Forgot Password</a></button>
+    <div class="username">
+      <input type="text" id="username" name="username" placeholder="Username"></input>
     </div>
-    <div class="createanaccount">
-      <button><a href="createaccount">Create an account</a></button>
+    <div class="password">
+      <input type="password" id="password" name="password" placeholder="Password"></input>
     </div>
-  </div>
-  
-  </div>
+    <div class="submit">
+        <button id="submit" type="submit">Login</button>
+    </div>
   </form>
+    <div class="forgotpassword">
+      <a href="forgotpassword">Forgot Password</a>
+    </div>
+    <div class="createaccount">
+      <button><a id="createaccount" href="createaccount">Create an account</a></button>
+    </div>
+  </div>
 </body>
 </html>
