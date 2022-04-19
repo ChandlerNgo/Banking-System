@@ -1,53 +1,62 @@
 <!DOCTYPE html>
-<html>
-
+<html></html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <title>Banking Login</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'BankingUI/createaccount.css' %}">
 </head>
-<center>
 <body>
-  <table>
-    <tr>
-      <td colspan="2">Create an account</td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <form method="POST" action="">
-          {% csrf_token %}
-          
-          <input type="text" id="firstname" name="firstname" placeholder="First Name"></input><br>
+  <form method="POST" action="">
+    {% csrf_token %}
+  <div class="topbar">
+    <h1>Chandler's Bank</h1>
+  </div>
+  <div class="loginbox">
+    <div class="logintext">
+      <h1>Create an Account</h1>
+    </div>
+    <div class="forminput">
+      <input type="text" id="firstname" name="firstname" placeholder="First Name" required></input>
+    </div>
 
-          <input type="text" id="lastname" name="lastname" placeholder="Last Name"></input><br>
+    <div class="forminput">
+      <input type="text" id="lastname" name="lastname" placeholder="Last Name" required></input>
+    </div>
 
-          <input type="email" id="email" name="email" placeholder="Email"></input><br>
+    <div class="forminput">
+      <input type="email" id="email" name="email" placeholder="Email" required></input>
+    </div>
 
-          <input type="date" id="birthday" name="birthday" placeholder="Birthday"></input><br>
+    <div class="forminput">
+      <input type="date" id="birthday" name="birthday" placeholder="Birthday" required></input>
+    </div>
 
-          <input type="text" id="username" name="username" placeholder="Username"></input><br>
+    <div class="forminput">
+      <input type="text" id="username" name="username" placeholder="Username" required></input>
+    </div>
 
-          <input type="number" id="pinnumber" name="pinnumber" placeholder="Pin Number"></input><br>
-          <!-- add leading zeros for numbers <1000 -->
+    <div class="forminput">
+      <input type="number" id="pinnumber" name="pinnumber" placeholder="Pin Number" required></input>
+    </div>
 
-          <input type="password" id="password" name="password" placeholder="Password"></input><br>
+    <div class="forminput">
+      <input type="password" id="password" name="password" placeholder="Password" required></input>
+    </div>
 
-          <input type="password" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password"></input><br>
-
-          <button id="submit" type="submit">Create an account</button><br>
-        </form>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <a href="index"><button>Sign In</button></a>
-      </td>
-      <td>
-        <a href="forgotpassword"><button>Forgot Password</button></a>
-      </td>
-    </tr>
-  </table>
+    <div class="forminput">
+      <input type="password" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password" required></input>
+    </div>
+    <div class="submit">
+      <button id="submit" type="submit">Create an account</button>
+    </div>
+  </form>
+    <h1> </h1>
+    <div class="navbutton">
+      <button onclick="location.href='index';">Login</button>
+      <button onclick="location.href='forgotpassword';">Reset Password</button>
+    </div>
+  </div>
 </body>
-</center>
 </html>

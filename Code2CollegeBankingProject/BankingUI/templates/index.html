@@ -6,30 +6,33 @@
   <meta name="viewport" content="width=device-width">
   <title>Banking Login</title>
   {% load static %}
-  <link rel="stylesheet" type="text/css" href="{% static 'BankingUI/style.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'BankingUI/index.css' %}">
 </head>
 <body>
   <form method="POST" action="">
-      {% csrf_token %}
+    {% csrf_token %}
+  <div class="topbar">
+    <h1>Chandler's Bank</h1>
+  </div>
   <div class="loginbox">
     <div class="logintext">
       <h1>Welcome to Chandler's Bank</h1>
     </div>
-    <div class="username">
+    <div class="forminput">
       <input type="text" id="username" name="username" placeholder="Username"></input>
     </div>
-    <div class="password">
+    <div class="forminput">
       <input type="password" id="password" name="password" placeholder="Password"></input>
     </div>
     <div class="submit">
         <button id="submit" type="submit">Login</button>
     </div>
   </form>
-    <div class="forgotpassword">
-      <a href="forgotpassword">Forgot Password</a>
+    <div class="response">
+      <a href="forgotpassword">{{response}}</a>
     </div>
     <div class="createaccount">
-      <button><a id="createaccount" href="createaccount">Create an account</a></button>
+      <button onmousedown="location.href='createaccount';">Create an account</button>
     </div>
   </div>
 </body>

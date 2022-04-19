@@ -1,6 +1,6 @@
-body{
-    background-color: rgb(226, 198, 163);
-}
+/* body{
+  background-color: rgb(226, 198, 163);
+} */
   
 .loginbox {
   display:grid;
@@ -13,8 +13,10 @@ body{
   right: 0;
   margin: auto;
   height: 30vh;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto;
   grid-template-columns: 1fr;
+  /* background-color: black;
+  color: white; */
 }
 
 .logintext{
@@ -22,7 +24,7 @@ body{
   justify-content: center;
 }
 
-.submit,.username,.password,.createaccount{
+.submit,.forminput,.createaccount{
   display:grid;
   justify-content: center;
   align-content: center;
@@ -31,11 +33,11 @@ body{
 }
 
 .submit > *,.createaccount > *{
-  border-radius: 25px;
-  border-color: rgb(219, 169, 107);
+  /* border-color: rgb(219, 169, 107); */
+  border-color: rgb(255, 255, 255);
 }
 
-.forgotpassword{
+.response{
   display:grid;
   justify-content: end;
   height:10%;
@@ -43,10 +45,14 @@ body{
 }
 
 a:link,a:visited,a:active {
-  color: black;
+  color: white;
   text-decoration: none;
+  background-color: black;
 }
 
-a:hover {
-  color: rgb(147, 111, 67);
+button{
+  background-color: rgba(0, 0, 0, 0.859);
+  color: white;
+  border-radius: 15px;
+  box-shadow: none;
 }
