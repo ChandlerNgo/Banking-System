@@ -8,6 +8,17 @@ def index(request):
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
+        try:
+            customer = BankInfo.objects.get(username=username)
+            if password == BankInfo.objects.values(pk=customer.id,flat = True):
+            return render(request,'account.html',customer.id)#password and user is for the same user
+        except BankInfo.DoesNotExist:
+            user = {
+                "response":"Your username or password was incorrect. Try again."
+            }
+            return render(request,'index.html',user)
+        
+        
         
     return render(request,'index.html')
 
