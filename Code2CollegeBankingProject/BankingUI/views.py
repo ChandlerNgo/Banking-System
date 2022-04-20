@@ -3,16 +3,24 @@ from django.http import HttpResponse
 from .FormFunctions.createaccount import savenewaccountinfo
 from .models import Customer,BankInfo,Transactions
 from django.db.utils import IntegrityError
+from django.core.exceptions import ObjectDoesNotExist
 
 def index(request):
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
         try:
-            customer = BankInfo.objects.get(username=username)
-            if password == BankInfo.objects.values(pk=customer.id,flat = True):
-            return render(request,'account.html',customer.id)#password and user is for the same user
-        except BankInfo.DoesNotExist:
+            customerbankinfo = BankInfo.objects.get(username=username)
+            # return HttpResponse(customerbankinfo.customer_info.first_name)
+            if password == customerbankinfo.password:
+                user = {
+                    "firstname":customerbankinfo.customer_info.first_name,
+                    "lastname":customerbankinfo.customer_info.last_name,
+                    "email":customerbankinfo.customer_info.email
+                    # query the transactions and then find everything inside
+                }
+                return render(request,'account.html',user)#password and user is for the same user
+        except ObjectDoesNotExist:
             user = {
                 "response":"Your username or password was incorrect. Try again."
             }
