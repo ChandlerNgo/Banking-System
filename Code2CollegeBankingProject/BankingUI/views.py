@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .FormFunctions.createaccount import savenewaccountinfo
-from .models import Customer,BankInfo,Transactions
+from .models import Transactions
 from django.db.utils import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.models import User
+
 
 def index(request):
     if request.method == "POST":
@@ -14,24 +16,29 @@ def index(request):
             # return HttpResponse(customerbankinfo.customer_info.first_name)
             if password == customerbankinfo.password:
                 user = {
-                    "firstname":customerbankinfo.customer_info.first_name,
-                    "lastname":customerbankinfo.customer_info.last_name,
-                    "email":customerbankinfo.customer_info.email
+                    "firstname": customerbankinfo.customer_info.first_name,
+                    "lastname": customerbankinfo.customer_info.last_name,
+                    "email": customerbankinfo.customer_info.email
                     # query the transactions and then find everything inside
                 }
-                request.session['userid'] = customerbankinfo.id #use this to reference user stuff
-                return render(request,'account.html',user)#password and user is for the same user
+                request.session[
+                    "userid"
+                ] = customerbankinfo.id  # use this to reference user stuff
+                return render(
+                    request, "account.html", user
+                )  # password and user is for the same user
             else:
                 user = {
-                "response":"Your username or password was incorrect. Try again. Click here to change your password."
-            }
-                return render(request,'index.html',user)
+                    "response": "Your username or password was incorrect. Try again. Click here to change your password."
+                }
+                return render(request, "index.html", user)
         except ObjectDoesNotExist:
             user = {
-                "response":"Your username or password was incorrect. Try again. Click here to change your password."
+                "response": "Your username or password was incorrect. Try again. Click here to change your password."
             }
-            return render(request,'index.html',user)
-    return render(request,'index.html')
+            return render(request, "index.html", user)
+    return render(request, "index.html")
+
 
 def createaccount(request):
     if request.method == "POST":
@@ -46,48 +53,65 @@ def createaccount(request):
 
         if password != confirmpassword:
             user = {
-                "response":"Your password and confirming password are not the same"
+                "response": "Your password and confirming password are not the same"
             }
-            render(request,'createaccount.html',user)
+            render(request, "createaccount.html", user)
 
-        newcustomer = Customer(first_name = firstname,last_name = lastname,birthday = birthday,email = email)
+        newcustomer = User.objects.create_user(
+            first_name=firstname,
+            last_name=lastname,
+            # birthday=birthday,
+            email=email,
+            username=username,
+            password=pinnumber,
+        )
         newcustomer.save()
-        newbankinfo = BankInfo(pin_number = pinnumber, username = username,password = password,customer_info = newcustomer)
-        try:
-            newbankinfo.save()
-        except IntegrityError:
-            newcustomer.delete()
-            user = {
-                "response":"This username has been used already. Try another one."
-            }
-            return render(request,'createaccount.html',user)
+        # newbankinfo = BankInfo(
+        #     pin_number=pinnumber,
+        #     username=username,
+        #     password=password,
+        #     customer_info=newcustomer,
+        # )
+        # try:
+        #     newbankinfo.save()
+        # except IntegrityError:
+        #     newcustomer.delete()
+        #     user = {"response": "This username has been used already. Try another one."}
+        #     return render(request, "createaccount.html", user)
 
-    return render(request,'createaccount.html')
+    return render(request, "createaccount.html")
+
 
 def forgotpassword(request):
-    return render(request,'forgotpassword.html')
+    return render(request, "forgotpassword.html")
+
 
 def account(request):
-    userid = request.session['userid']
-    customerbankinfo = BankInfo.objects.get(id = userid)
+    userid = request.session["userid"]
+    customerbankinfo = BankInfo.objects.get(id=userid)
     user = {
-    "firstname":customerbankinfo.customer_info.first_name,
-    "lastname":customerbankinfo.customer_info.last_name,
-    "email":customerbankinfo.customer_info.email
+        "firstname": customerbankinfo.customer_info.first_name,
+        "lastname": customerbankinfo.customer_info.last_name,
+        "email": customerbankinfo.customer_info.email,
     }
-    return render(request,'account.html', user)
+    return render(request, "account.html", user)
+
 
 def changeaccountinfo(request):
-    return render(request,'changeaccountinfo.html')
+    return render(request, "changeaccountinfo.html")
+
 
 def changemoney(request):
-    userid = request.session['userid']
-    customerbankinfo = BankInfo.objects.get(id = userid)
+    userid = request.session["userid"]
+    customerbankinfo = BankInfo.objects.get(id=userid)
     if request.method == "POST":
-        transactiontype = request.POST.get('transactiontype')
-        amount = request.POST.get('amount')
-        newtransaction = Transactions(transactiontype = transactiontype, amount = amount, account = customerbankinfo)
+        transactiontype = request.POST.get("transactiontype")
+        amount = request.POST.get("amount")
+        newtransaction = Transactions(
+            transactiontype=transactiontype, amount=amount, account=customerbankinfo
+        )
         newtransaction.save()
-    return render(request,'changemoney.html')
+    return render(request, "changemoney.html")
+
 
 # add required field into the end of html forms after testing

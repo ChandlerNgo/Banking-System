@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from BankingUI.models import Customer,BankInfo,Transactions
+
+# from BankingUI.models import Customer,BankInfo,Transactions
+
 
 def savenewaccountinfo(request):
     if request.method == "POST":
@@ -14,11 +16,13 @@ def savenewaccountinfo(request):
         confirmpassword = request.POST["confirmpassword"]
         if password != confirmpassword:
             return HttpResponse(confirmpassword + password)
-        newcustomer = Customer(first_name = firstname,last_name = lastname,birthday = birthday,email = email)
+        newcustomer = Customer(
+            first_name=firstname, last_name=lastname, birthday=birthday, email=email
+        )
         newcustomer.save()
-        newbankinfo = BankInfo(pin_number = pinnumber, username = username,password = password)
+        newbankinfo = BankInfo(
+            pin_number=pinnumber, username=username, password=password
+        )
         if newbankinfo == newbankinfo:
-            return HttpResponse(newbankinfo)    
+            return HttpResponse(newbankinfo)
         # newbankinfo.save()
-        
-        
