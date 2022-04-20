@@ -19,7 +19,7 @@ def index(request):
                     "email":customerbankinfo.customer_info.email
                     # query the transactions and then find everything inside
                 }
-                request.session['userid'] = customerbankinfo #use this to reference user stuff
+                request.session['userid'] = customerbankinfo.id #use this to reference user stuff
                 return render(request,'account.html',user)#password and user is for the same user
             else:
                 user = {
@@ -71,12 +71,30 @@ def forgotpassword(request):
     return render(request,'forgotpassword.html')
 
 def account(request):
-    return render(request,'account.html')
+    customerbankinfo = BankInfo.objects.get[id=request.session['userid']]
+    user = {
+    "firstname":customerbankinfo.customer_info.first_name,
+    "lastname":customerbankinfo.customer_info.last_name,
+    "email":customerbankinfo.customer_info.email
+    }
+    return render(request,'account.html', user)
 
 def changeaccountinfo(request):
     return render(request,'changeaccountinfo.html')
 
 def changemoney(request):
-    return render(request,'changemoney.html')
+    customerbankinfo = BankInfo.objects.get(pk =request.session['userid'])
+    
+    if request.method == "POST":
+        transactiontype = request.POST['deposit']
+        transactiontype1 = request.POST['withdraw']
+        return HttpResponse({transactiontype} {transactiontype1})
+# test
+
+
+
+        
+        # newtransaction = Transactions(transactiontype = )
+    return render(request,'changemoney.html',response)
 
 # add required field into the end of html forms after testing

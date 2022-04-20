@@ -15,8 +15,8 @@ class BankInfo(models.Model):
     customer_info = models.ForeignKey(Customer,on_delete=models.CASCADE)
     
 class Transactions(models.Model):
-    date = models.DateField()
-    is_withdrawal = models.BooleanField()
+    date = models.DateField(auto_now_add=True)
+    transactiontype = models.CharField(max_length=8)
     amount = models.IntegerField()
     account = models.ForeignKey(BankInfo, on_delete=models.CASCADE)
     
