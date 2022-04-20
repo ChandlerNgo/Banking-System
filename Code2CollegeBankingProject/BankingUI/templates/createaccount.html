@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html></html>
+<html>
+
+</html>
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
@@ -7,56 +10,59 @@
   {% load static %}
   <link rel="stylesheet" type="text/css" href="{% static 'BankingUI/createaccount.css' %}">
 </head>
+
 <body>
   <form method="POST" action="">
     {% csrf_token %}
-  <div class="topbar">
-    <h1>Chandler's Bank</h1>
-  </div>
-  <div class="loginbox">
-    <div class="logintext">
-      <h1>Create an Account</h1>
+    <div class="topbar">
+      <h1>Chandler's Bank</h1>
     </div>
-    <div class="forminput">
-      <input type="text" id="firstname" name="firstname" placeholder="First Name" required></input>
-    </div>
+    <div class="loginbox">
+      <div class="logintext">
+        <h1>Create an Account</h1>
+      </div>
+      <div class="forminput">
+        <input type="text" id="firstname" name="firstname" placeholder="First Name" required></input>
+      </div>
 
-    <div class="forminput">
-      <input type="text" id="lastname" name="lastname" placeholder="Last Name" required></input>
-    </div>
+      <div class="forminput">
+        <input type="text" id="lastname" name="lastname" placeholder="Last Name" required></input>
+      </div>
 
-    <div class="forminput">
-      <input type="email" id="email" name="email" placeholder="Email" required></input>
-    </div>
+      <div class="forminput">
+        <input type="email" id="email" name="email" placeholder="Email" required></input>
+      </div>
 
-    <div class="forminput">
-      <input type="date" id="birthday" name="birthday" placeholder="Birthday" required></input>
-    </div>
+      <div class="forminput">
+        <input type="date" id="birthday" name="birthday" placeholder="Birthday" required></input>
+      </div>
 
-    <div class="forminput">
-      <input type="text" id="username" name="username" placeholder="Username" required></input>
-    </div>
+      <div class="forminput">
+        <input type="text" id="username" name="username" placeholder="Username" required></input>
+      </div>
 
-    <div class="forminput">
-      <input type="number" id="pinnumber" name="pinnumber" placeholder="Pin Number" required></input>
-    </div>
+      <div class="forminput">
+        <input type="number" id="pinnumber" name="pinnumber" placeholder="Pin Number" required></input>
+      </div>
 
-    <div class="forminput">
-      <input type="password" id="password" name="password" placeholder="Password" required></input>
-    </div>
+      <div class="forminput">
+        <input type="password" id="password" name="password" placeholder="Password" required></input>
+      </div>
 
-    <div class="forminput">
-      <input type="password" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password" required></input>
-    </div>
-    <div class="submit">
-      <button id="submit" type="submit">Create an account</button>
-    </div>
+      <div class="forminput">
+        <input type="password" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password"
+          required></input>
+      </div>
+      <div class="submit">
+        <button id="submit" type="submit">Create an account</button>
+      </div>
   </form>
-    <center><p>{{response}}</p></center>
-    <div class="navbutton">
-      <button onclick="location.href='index';">Sign In</button>
-      <button onclick="location.href='forgotpassword';">Reset Password</button>
-    </div>
+  <h1> </h1>
+  <div class="navbutton">
+    <button onclick="location.href='{% url 'createaccount' %}';">Login</button>
+    <button onclick="location.href='{% url 'forgotpassword' %}';">Reset Password</button>
+  </div>
   </div>
 </body>
+
 </html>

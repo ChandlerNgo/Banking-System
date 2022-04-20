@@ -8,32 +8,34 @@
   {% load static %}
   <link rel="stylesheet" type="text/css" href="{% static 'BankingUI/index.css' %}">
 </head>
+
 <body>
   <form method="POST" action="">
     {% csrf_token %}
-  <div class="topbar">
-    <h1>Chandler's Bank</h1>
-  </div>
-  <div class="loginbox">
-    <div class="logintext">
-      <h1>Sign In</h1>
+    <div class="topbar">
+      <h1>Chandler's Bank</h1>
     </div>
-    <div class="forminput">
-      <input type="text" id="username" name="username" placeholder="Username" required></input>
-    </div>
-    <div class="forminput">
-      <input type="password" id="password" name="password" placeholder="Password" required></input>
-    </div>
-    <div class="submit">
+    <div class="loginbox">
+      <div class="logintext">
+        <h1>Sign In</h1>
+      </div>
+      <div class="forminput">
+        <input type="text" id="username" name="username" placeholder="Username" required></input>
+      </div>
+      <div class="forminput">
+        <input type="password" id="password" name="password" placeholder="Password" required></input>
+      </div>
+      <div class="submit">
         <button id="submit" type="submit">Sign In</button>
-    </div>
+      </div>
   </form>
-    <div class="response">
-      <a href="forgotpassword">{{response}}</a>
-    </div>
-    <div class="createaccount">
-      <button onmousedown="location.href='createaccount';">Create an account</button>
-    </div>
+  <div class="response">
+    <a href="{% url 'forgotpassword' %}">{{response}}</a>
+  </div>
+  <div class="createaccount">
+    <button onmousedown="location.href='{% url 'createaccount' %}';">Create an account</button>
+  </div>
   </div>
 </body>
+
 </html>
