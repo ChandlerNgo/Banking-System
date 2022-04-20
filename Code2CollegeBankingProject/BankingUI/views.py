@@ -19,10 +19,16 @@ def index(request):
                     "email":customerbankinfo.customer_info.email
                     # query the transactions and then find everything inside
                 }
+                request.session['userid'] = customerbankinfo #use this to reference user stuff
                 return render(request,'account.html',user)#password and user is for the same user
+            else:
+                user = {
+                "response":"Your username or password was incorrect. Try again. Click here to change your password."
+            }
+                return render(request,'index.html',user)
         except ObjectDoesNotExist:
             user = {
-                "response":"Your username or password was incorrect. Try again."
+                "response":"Your username or password was incorrect. Try again. Click here to change your password."
             }
             return render(request,'index.html',user)
         

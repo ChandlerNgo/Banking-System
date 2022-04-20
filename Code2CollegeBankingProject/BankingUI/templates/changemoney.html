@@ -1,20 +1,54 @@
+<!DOCTYPE html>
 <html>
-  <body>
-    <form method="POST" action="account">
-      {% csrf_token %}
-    <!-- 
-      Would you like to withdraw or deposit
-      take the money and add/subtract from acc.
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Banking Login</title>
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'BankingUI/index.css' %}">
+</head>
+<!-- <script>
+  function changetext(depositorwithdraw){
+    if(depositorwithdraw == 'deposit'){
+      document.getElementById('deposit').disabled = true;
+      document.getElementById('withdraw').disabled = false;
+    }
+    if(depositorwithdraw == 'withdraw'){
+      document.getElementById('deposit').disabled = false;
+      document.getElementById('withdraw').disabled = true;
+    }
+    // why does js have lower case bools but python have upper case :(
+  }
+</script> -->
+<body>
+  <form method="POST" action="">
+    {% csrf_token %}
+  <div class="topbar">
+    <h1>Chandler's Bank</h1>
+  </div>
+  <div class="loginbox">
+    <div class="logintext">
+      <h1>Would you like to deposit or withdraw money?</h1>
+    </div>
+    <div class="radio">
+      <input type="radio" id="deposit" name="deposit">Deposit</input>
+    </div>
+    <div class="radio">
+      <input type="radio" id="withdraw" name="deposit">Withdraw</button>
+    </div>
+    <div class="forminput">
+      <input min="1" type="number" id="amount" name="amount" placeholder="Amount"></input>
+    </div>
 
-      Would you like to delete this acc.
-      [include an are you sure message]
-     -->
-      <label>Would you like to deposit or withdraw money?</label>
-      <input type="radio" id="deposit" name="depositorwithdraw">Deposit</input>
-      <input type="radio" id="withdraw" name="depositorwithdraw">Withdraw</input><br>
+<br>
 
-      <input type="number" id="amount" name="amount" min="0" placeholder="Amount"></input><br>
-      <button id="submit" type="submit">Deposit/withdraw your money</button>
-    </form>
-  </body>
+    <div class="submit">
+        <button id="submit" type="submit">Deposit/withdraw your money</button>
+    </div>
+  </form>
+  <div class="forminput">
+    <button id="return" type="return" onmousedown="location.href='account';">Return to Page</button>
+  </div>
+  </div>
+</body>
 </html>
