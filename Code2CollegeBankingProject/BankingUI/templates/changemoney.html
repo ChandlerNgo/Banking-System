@@ -30,11 +30,13 @@
     <div class="logintext">
       <h1>Would you like to deposit or withdraw money?</h1>
     </div>
-    <div class="radio">
-      <input type="radio" id="deposit" name="deposit">Deposit</input>
-    </div>
-    <div class="radio">
-      <input type="radio" id="withdraw" name="deposit">Withdraw</button>
+    <div class="dropdown">
+      <center>
+        <select name="transactiontype">
+          <option value="deposit">Deposit</option>
+          <option value="withdraw">Withdraw</option>
+        </select>
+      </center>
     </div>
     <div class="forminput">
       <input min="1" type="number" id="amount" name="amount" placeholder="Amount"></input>

@@ -71,7 +71,8 @@ def forgotpassword(request):
     return render(request,'forgotpassword.html')
 
 def account(request):
-    customerbankinfo = BankInfo.objects.get[id=request.session['userid']]
+    userid = request.session['userid']
+    customerbankinfo = BankInfo.objects.get(id = userid)
     user = {
     "firstname":customerbankinfo.customer_info.first_name,
     "lastname":customerbankinfo.customer_info.last_name,
@@ -83,18 +84,13 @@ def changeaccountinfo(request):
     return render(request,'changeaccountinfo.html')
 
 def changemoney(request):
-    customerbankinfo = BankInfo.objects.get(pk =request.session['userid'])
-    
+    userid = request.session['userid']
+    customerbankinfo = BankInfo.objects.get(id = userid)
     if request.method == "POST":
-        transactiontype = request.POST['deposit']
-        transactiontype1 = request.POST['withdraw']
-        return HttpResponse({transactiontype} {transactiontype1})
-# test
-
-
-
-        
-        # newtransaction = Transactions(transactiontype = )
-    return render(request,'changemoney.html',response)
+        transactiontype = request.POST.get('transactiontype')
+        amount = request.POST.get('amount')
+        newtransaction = Transactions(transactiontype = transactiontype, amount = amount, account = customerbankinfo)
+        newtransaction.save()
+    return render(request,'changemoney.html')
 
 # add required field into the end of html forms after testing
