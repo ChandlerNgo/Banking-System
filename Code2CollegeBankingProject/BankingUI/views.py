@@ -31,9 +31,6 @@ def index(request):
                 "response":"Your username or password was incorrect. Try again. Click here to change your password."
             }
             return render(request,'index.html',user)
-        
-        
-        
     return render(request,'index.html')
 
 def createaccount(request):
