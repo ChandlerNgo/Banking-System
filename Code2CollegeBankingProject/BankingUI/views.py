@@ -130,3 +130,5 @@ def changemoney(request):
 
 def todo(request):
     return render(request,'todo.html')
+
+# this is a test
