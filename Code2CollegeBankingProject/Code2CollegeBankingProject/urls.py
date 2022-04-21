@@ -10,4 +10,5 @@ urlpatterns = [
     path('BankingUI/changeaccountinfo',views.changeaccountinfo, name='changeaccountinfo'),
     path('BankingUI/account',views.account, name='account'),
     path('BankingUI/changemoney',views.changemoney, name='changemoney'),
+    path('BankingUI/todo',views.todo, name='todo'),
 ]
