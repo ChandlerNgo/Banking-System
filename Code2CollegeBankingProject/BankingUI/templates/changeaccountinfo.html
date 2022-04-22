@@ -12,18 +12,38 @@
   <!-- 
       edit and save.. sends back to account.html
    -->
-  <form method="POST" action="account">
+   <form method="POST" action="">
     {% csrf_token %}
-    <input type="text" id="firstname" name="firstname" placeholder="First Name"></input><br>
-
-    <input type="text" id="lastname" name="lastname" placeholder="last Name"></input><br>
-
-    <input type="email" id="email" name="email" placeholder="Email"></input><br>
-
-    <input type="text" id="username" name="username" placeholder="Username"></input><br>
-    
-    <button id="submit" type="submit">Save Changes</button><br>
+  <div class="topbar">
+    <h1>Chandler's Bank</h1>
+  </div>
+  <div class="loginbox">
+    <div class="logintext">
+      <h1>Change your Info</h1>
+    </div>
+    <div class="forminput">
+      <input type="text" id="firstname" name="firstname" placeholder="First Name"></input></input>
+    </div>
+    <div class="forminput">
+      <input type="text" id="lastname" name="lastname" placeholder="Last Name"></input></input>
+    </div>
+    <div class="forminput">
+      <input type="email" id="email" name="email" placeholder="Email"></input>
+    </div>
+    <div class="forminput">
+      <input type="text" id="username" name="username" placeholder="Username" required></input>
+    </div>
+    <div class="submit">
+        <button id="submit" type="submit">Sign In</button>
+    </div>
   </form>
+    <div class="response">
+      <a href="forgotpassword">{{response}}</a>
+    </div>
+    <div class="createaccount">
+      <button><a href="{% url 'createaccount' %}">Create an account</a></button>
+    </div>
+  </div>
 </body>
 </center>
 </html>
