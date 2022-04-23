@@ -1,3 +1,4 @@
+from http.client import HTTPS_PORT
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Transactions
@@ -40,17 +41,24 @@ def createaccount(request):
         username = request.POST["username"]
         pinnumber = request.POST["pinnumber"]
         # check if user/email is unique then create user
-        try:
-            newcustomer = User.objects.create_user(username, email, pinnumber)
+        if User.objects.filter(email = email).exists():
+            user = {
+                "response":"This email has been used already. Try another one."
+            }
+            return render(request,'createaccount.html',user)
+        elif User.objects.filter(username = username).exists():
+            user = {
+                "response":"This username has been used already. Try another one."
+            }
+            return render(request,'createaccount.html',user)
+        else:
+            newcustomer = User.objects.create_user(username = username, email = email, password = pinnumber)
             newcustomer.first_name = first_name
             newcustomer.last_name = last_name
             newcustomer.save()
-        except IntegrityError:
-            newcustomer.delete()
-            user = {
-                "response":"This username/email has been used already. Try another one."
-            }
-            return render(request,'createaccount.html',user)
+        return render(request,'createaccount.html',user)
+
+        
 
     return render(request,'createaccount.html')
 
