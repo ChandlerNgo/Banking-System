@@ -17,6 +17,7 @@
   grid-template-columns: 1fr;
   /* background-color: black;
   color: white; */
+  
 }
 
 .logintext{
@@ -60,4 +61,8 @@ button{
 button:disabled{
   color:rgba(12, 11, 11, 0.729);
   font-size: 0px;
+}
+
+button > a{
+  color:white;
 }
