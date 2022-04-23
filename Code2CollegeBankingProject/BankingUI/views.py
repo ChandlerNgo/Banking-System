@@ -5,6 +5,7 @@ from .models import Transactions
 from django.db.utils import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
+from django.contrib.auth.hashers import check_password
 
 def index(request):
     if request.method == "POST":
@@ -56,6 +57,9 @@ def createaccount(request):
             newcustomer.first_name = first_name
             newcustomer.last_name = last_name
             newcustomer.save()
+            user = {
+                "response":" "
+            }
         return render(request,'createaccount.html',user)
 
         
@@ -63,42 +67,52 @@ def createaccount(request):
     return render(request,'createaccount.html')
 
 def forgotpassword(request):
-    userid = request.session['userid']
-    customerbankinfo = User.objects.get(id = userid)
     if request.method == "POST":
         first_name = request.POST["firstname"]
         last_name = request.POST["lastname"]
         email = request.POST["email"]
         username = request.POST["username"]
-        pin_number = request.POST["pin_number"]
-        if customerbankinfo.check_password(pin_number) == True:
-            user = {
-                "response":"Your new password does not match the confirming password"
-            }
-            render(request,'forgotpassword.html',user)
-        try:
-            customerbankinfo = User.objects.get(username = username)
-            if first_name == customerbankinfo.first_name and last_name == customerbankinfo.last_name and email == customerbankinfo.email and customerbankinfo.pin_number == str(customerbankinfo.pin_number):
-                customerbankinfo.pin_number = pin_number
-                customerbankinfo.save()
-                user = {
-                    "response":"Password was saved"
-                }
-                return render(request,'forgotpassword.html',user)
+        pin_number = request.POST["pinnumber"]
+        new_pin_number = request.POST["newpinnumber"]
+        # check if user exists
+        # see if the other fields match
+        # see if password matches
+        # change the password
 
+# should the person be able to change their pin with or without their old pin
+
+        if User.objects.filter(username = username).exists():
+            customerbankinfo = User.objects.get(username = username)
+            if customerbankinfo.first_name == first_name and customerbankinfo.last_name == last_name and customerbankinfo.email == email:# personal info is correct
+                is_password_correct = check_password(pin_number, customerbankinfo.password)
+                if is_password_correct == True:#password is correct
+                    if pin_number != new_pin_number:
+                        customerbankinfo.set_password(new_pin_number)
+                        customerbankinfo.save()
+                        user = {
+                            "response":"Your new pin number has been created"
+                        }
+                        return render(request, 'forgotpassword.html', user)
+                    else:
+                        user = {
+                            "response":"Your pin number is the same as the new password"
+                        }
+                        return render(request, 'forgotpassword.html', user)
+                else:
+                    user = {
+                            "response":"Your pin number is not correct"
+                        }
+                    return render(request, 'forgotpassword.html', user)
             else:
                 user = {
-                    "response":"One or more of your fields are incorrect"
+                    "response":"One of your fields is not correct"
                 }
-                # return HttpResponse(f'{birthday == str(customerbankinfo.customer_info.birthday)}')
-                # return HttpResponse(f'{firstname == customerbankinfo.customer_info.first_name}, {lastname == customerbankinfo.customer_info.last_name} ,{birthday == str(customerbankinfo.customer_info.birthday)}, {email == customerbankinfo.customer_info.email}, {pin_number == str(customerbankinfo.pin_number)}')
-
-                return render(request,'forgotpassword.html',user)
-        except ObjectDoesNotExist:
+                return render(request, 'forgotpassword.html', user)
+        else:
             user = {
-                "response":"This username doesn't exist"
-            }
-            return render(request,'forgotpassword.html',user)
+                    "response":"This username doesn't exist"
+                }
+            return render(request, 'forgotpassword.html', user)
     return render(request,'forgotpassword.html')
 
 def account(request):
