@@ -10,26 +10,27 @@ from django.contrib.auth.hashers import check_password
 def index(request):
     if request.method == "POST":
         username = request.POST["username"]
-        pin_number = request.POST["password"]
-        try:
-            customerbankinfo = User.objects.get(username=username)
-            # return HttpResponse(customerbankinfo.customer_info.first_name)
-            if User.check_password(pin_number) == True:
+        pin_number = request.POST["pinnumber"]
+
+        if User.objects.filter(username = username).exists():
+            customerbankinfo = User.objects.get(username = username)
+            is_password_correct = check_password(pin_number, customerbankinfo.password)
+            if is_password_correct == True:
                 user = {
-                    "name":User.get_full_name(),
-                    "email":User.email
+                    "firstname":customerbankinfo.first_name,
+                    "lastname":customerbankinfo.last_name,
+                    "email":customerbankinfo.email
                     # query the transactions and then find everything inside
                 }
-                request.session['userid'] = User.id #use this to reference user stuff
-                return render(request,'account.html',user)#password and user is for the same user
+                return render(request,'account.html',user)
             else:
                 user = {
-                "response":"Your username or password was incorrect. Try again. Click here to change your password."
-            }
+                "response":"The password is not correct"
+                }
                 return render(request,'index.html',user)
-        except ObjectDoesNotExist:
+        else:
             user = {
-                "response":"Your username or password was incorrect. Try again. Click here to change your password."
+                "response":"This username doesn't exist"
             }
             return render(request,'index.html',user)
     return render(request,'index.html')
@@ -42,12 +43,12 @@ def createaccount(request):
         username = request.POST["username"]
         pinnumber = request.POST["pinnumber"]
         # check if user/email is unique then create user
-        if User.objects.filter(email = email).exists():
+        if User.objects.filter(email = email).exists() == True:
             user = {
                 "response":"This email has been used already. Try another one."
             }
             return render(request,'createaccount.html',user)
-        elif User.objects.filter(username = username).exists():
+        elif User.objects.filter(username = username).exists() == True:
             user = {
                 "response":"This username has been used already. Try another one."
             }
