@@ -5,7 +5,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <title>Changing [username] Info</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'BankingUI/index.css' %}">
 </head>
 <center>
 <body>
@@ -22,26 +23,26 @@
       <h1>Change your Info</h1>
     </div>
     <div class="forminput">
-      <input type="text" id="firstname" name="firstname" placeholder="First Name"></input></input>
+      <input type="text" id="firstname" name="firstname" placeholder="First Name" required></input></input>
     </div>
     <div class="forminput">
-      <input type="text" id="lastname" name="lastname" placeholder="Last Name"></input></input>
+      <input type="text" id="lastname" name="lastname" placeholder="Last Name" required></input></input>
     </div>
     <div class="forminput">
-      <input type="email" id="email" name="email" placeholder="Email"></input>
+      <input type="email" id="email" name="email" placeholder="Email" required></input>
     </div>
     <div class="forminput">
       <input type="text" id="username" name="username" placeholder="Username" required></input>
     </div>
     <div class="submit">
-        <button id="submit" type="submit">Sign In</button>
+        <button id="submit" type="submit">Save Changes</button>
     </div>
   </form>
     <div class="response">
-      <a href="forgotpassword">{{response}}</a>
+      <p>{{response}}</p>
     </div>
     <div class="createaccount">
-      <button><a href="{% url 'createaccount' %}">Create an account</a></button>
+      <button><a href="{% url 'account' %}">Return to home page</a></button>
     </div>
   </div>
 </body>

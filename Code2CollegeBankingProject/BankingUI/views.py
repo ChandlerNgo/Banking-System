@@ -136,6 +136,35 @@ def account(request):
     return render(request,'account.html', user)
 
 def changeaccountinfo(request):
+    if request.method == "POST":
+        first_name = request.POST["firstname"]
+        last_name = request.POST["lastname"]
+        email = request.POST["email"]
+        username = request.POST["username"]
+
+        userid = request.session['userid']
+        customer_bank_info = User.objects.get(id = userid)
+        if User.objects.filter(username = username).exists() == False or customer_bank_info.username == username:#if the username doensn't exist
+            if User.objects.filter(email = email).exists() == False or customer_bank_info.email == email:#if the email doensn't exist
+                customer_bank_info.first_name = first_name
+                customer_bank_info.last_name = last_name
+                customer_bank_info.email = email
+                customer_bank_info.username = username
+                customer_bank_info.save()
+                user = {
+                    "response":"Your new information has been saved"
+                }
+                return render(request,'changeaccountinfo.html',user)
+            else:
+                user = {
+                "response":"The email is already in use"
+                }
+                return render(request,'changeaccountinfo.html',user)
+        else:
+            user = {
+            "response":"The username is already in use"
+            }
+            return render(request,'changeaccountinfo.html',user)
     return render(request,'changeaccountinfo.html')
 
 def changemoney(request):
