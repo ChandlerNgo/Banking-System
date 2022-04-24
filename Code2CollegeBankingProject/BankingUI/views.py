@@ -16,6 +16,7 @@ def index(request):
             customerbankinfo = User.objects.get(username = username)
             is_password_correct = check_password(pin_number, customerbankinfo.password)
             if is_password_correct == True:
+                request.session['userid'] = customerbankinfo.id
                 user = {
                     "firstname":customerbankinfo.first_name,
                     "lastname":customerbankinfo.last_name,
@@ -59,7 +60,7 @@ def createaccount(request):
             newcustomer.last_name = last_name
             newcustomer.save()
             user = {
-                "response":" "
+                "response":"Your bank account has been created"
             }
         return render(request,'createaccount.html',user)
 
@@ -120,9 +121,9 @@ def account(request):
     userid = request.session['userid']
     customerbankinfo = User.objects.get(id = userid)
     user = {
-    "firstname":User.first_name,
-    "lastname":User.last_name,
-    "email":User.email
+    "firstname":customerbankinfo.first_name,
+    "lastname":customerbankinfo.last_name,
+    "email":customerbankinfo.email
     }
     return render(request,'account.html', user)
 
@@ -137,6 +138,10 @@ def changemoney(request):
         amount = request.POST.get('amount')
         newtransaction = Transactions(transactiontype = transactiontype, amount = amount, account = customerbankinfo)
         newtransaction.save()
+        user = {
+                    "response":"Your transaction has been made"
+                }
+        return render(request, 'changemoney.html', user)
     return render(request,'changemoney.html')
 
 # add required field into the end of html forms after testing

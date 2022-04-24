@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
@@ -19,6 +18,8 @@
     <div class="logintext">
       <h1>Sign In</h1>
     </div>
+    <form method="POST" action="">
+      {% csrf_token %}
     <div class="forminput">
       <input type="text" id="username" name="username" placeholder="Username" required></input>
     </div>
@@ -30,9 +31,14 @@
       <a href="forgotpassword">{{response}}</a>
       <h1></h1>
     </div>
+    
+    </form>
     <div class="createaccount">
-      <button><a href="{% url 'createaccount' %}">Create an account</a></button>
+      <form action="{% url 'createaccount' %}">
+        <button type="submit" value="createaccount">Create an account</button>
+      </form>
     </div>
   </div>
+  </form>
 </body>
 </html>
