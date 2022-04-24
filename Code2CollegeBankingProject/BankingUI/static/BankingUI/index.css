@@ -12,7 +12,7 @@
   left: 0;
   right: 0;
   margin: auto;
-  height: 30vh;
+  height: 40vh;
   grid-template-rows: auto;
   grid-template-columns: 1fr;
   /* background-color: black;
@@ -25,7 +25,7 @@
   justify-content: center;
 }
 
-.submit,.forminput,.createaccount{
+.submit,.forminput,.navbutton{
   display:grid;
   justify-content: center;
   align-content: center;
@@ -33,7 +33,7 @@
   grid-template-columns: .8fr;
 }
 
-.submit > *,.createaccount > *{
+.submit > *,.navbutton > *{
   /* border-color: rgb(219, 169, 107); */
   border-color: rgb(255, 255, 255);
 }
@@ -65,4 +65,16 @@ button:disabled{
 
 button > a{
   color:white;
+}
+
+.navbutton{
+  display: grid;
+  justify-content: center;
+  grid-template-rows: 1fr 1fr;
+  height: 100%;
+}
+
+.navbutton > form > button{
+  width:100%;
+  height:100%;
 }

@@ -18,8 +18,6 @@
     <div class="logintext">
       <h1>Sign In</h1>
     </div>
-    <form method="POST" action="">
-      {% csrf_token %}
     <div class="forminput">
       <input type="text" id="username" name="username" placeholder="Username" required></input>
     </div>
@@ -28,12 +26,11 @@
     </div>
     <div class="submit">
       <button id="submit" type="submit">Sign In</button>
-      <a href="forgotpassword">{{response}}</a>
-      <h1></h1>
+      
     </div>
-    
+    <center><a href="forgotpassword">{{response}}</a></center>
     </form>
-    <div class="createaccount">
+    <div class="navbutton">
       <form action="{% url 'createaccount' %}">
         <button type="submit" value="createaccount">Create an account</button>
       </form>

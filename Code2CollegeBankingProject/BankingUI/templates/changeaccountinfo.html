@@ -38,11 +38,11 @@
         <button id="submit" type="submit">Save Changes</button>
     </div>
   </form>
-    <div class="response">
-      <p>{{response}}</p>
-    </div>
-    <div class="createaccount">
-      <button><a href="{% url 'account' %}">Return to home page</a></button>
+    <center><p>{{response}}</p></center>
+    <div class="navbutton">
+      <form action="{% url 'account' %}">
+        <button type="submit" value="account">Return to home page</button>
+      </form>
     </div>
   </div>
 </body>

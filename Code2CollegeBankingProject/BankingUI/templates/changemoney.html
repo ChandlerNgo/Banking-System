@@ -41,16 +41,16 @@
     <div class="forminput">
       <input min="1" type="number" id="amount" name="amount" placeholder="Amount" required></input>
     </div>
-    <p>{{response}}</p>
-<br>
-
+    <center><p>{{response}}</p></center>
     <div class="submit">
         <button id="submit" type="submit">Deposit/withdraw your money</button>
     </div>
   </form>
-  <div class="forminput">
-    <button id="return" type="return"><a href="{% url 'account' %}">Return to Page</a></button>
-  </div>
+    <div class="navbutton">
+      <form action="{% url 'account' %}">
+        <button type="submit" value="account">Return to home page</button>
+      </form>
+    </div>
   </div>
 </body>
 </html>

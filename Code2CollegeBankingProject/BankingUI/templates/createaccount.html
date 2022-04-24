@@ -32,17 +32,23 @@
     <div class="forminput">
       <input type="text" id="username" name="username" placeholder="Username" required></input>
     </div>
+    <div class="forminput">
       <input type="number" id="pinnumber" name="pinnumber" placeholder="Pin Number" required></input>
     </div>
 
     <div class="submit">
       <button id="submit" type="submit">Create an account</button>
     </div>
-  </form>
     <center><p>{{response}}</p></center>
+    </form>
     <div class="navbutton">
-      <button><a href="{% url 'index' %}">Sign In</a></button>
-      <button><a href="{% url 'forgotpassword' %}">Reset Password</a></button>
+      <form action="{% url 'index' %}">
+        <button type="submit" value="index">Sign In</button>
+      </form>
+
+      <form action="{% url 'forgotpassword' %}">
+        <button type="submit" value="forgotpassword">Reset Password</button>
+      </form>
     </div>
   </div>
 </body>

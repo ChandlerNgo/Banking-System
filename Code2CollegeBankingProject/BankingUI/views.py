@@ -46,12 +46,12 @@ def createaccount(request):
         # check if user/email is unique then create user
         if User.objects.filter(email = email).exists() == True:
             user = {
-                "response":"This email has been used already. Try another one."
+                "response":"This email has been used already"
             }
             return render(request,'createaccount.html',user)
         elif User.objects.filter(username = username).exists() == True:
             user = {
-                "response":"This username has been used already. Try another one."
+                "response":"This username has been used already"
             }
             return render(request,'createaccount.html',user)
         else:
@@ -173,6 +173,20 @@ def changemoney(request):
     if request.method == "POST":
         transaction_type = request.POST.get('transactiontype')
         amount = request.POST.get('amount')
+
+
+        customer_transactions = Transactions.objects.filter(account = customer_bank_info.id)
+        customer_amount = 0
+        for transactions in customer_transactions:
+            if transactions.transactiontype == "deposit":
+                customer_amount = customer_amount + transactions.amount
+            if transactions.transactiontype == "withdraw":
+                customer_amount = customer_amount - transactions.amount
+        if transaction_type == 'withdraw' and customer_amount - int(amount) < 0:
+            user = {
+                    "response":"You do not have enough money in your account"
+                }
+            return render(request, 'changemoney.html', user)
         newtransaction = Transactions(transactiontype = transaction_type, amount = amount, account = customer_bank_info)
         newtransaction.save()
         user = {
