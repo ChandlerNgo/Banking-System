@@ -13,14 +13,14 @@ def index(request):
         pin_number = request.POST["pinnumber"]
 
         if User.objects.filter(username = username).exists():
-            customerbankinfo = User.objects.get(username = username)
-            is_password_correct = check_password(pin_number, customerbankinfo.password)
+            customer_bank_info = User.objects.get(username = username)
+            is_password_correct = check_password(pin_number, customer_bank_info.password)
             if is_password_correct == True:
-                request.session['userid'] = customerbankinfo.id
+                request.session['userid'] = customer_bank_info.id
                 user = {
-                    "firstname":customerbankinfo.first_name,
-                    "lastname":customerbankinfo.last_name,
-                    "email":customerbankinfo.email
+                    "firstname":customer_bank_info.first_name,
+                    "lastname":customer_bank_info.last_name,
+                    "email":customer_bank_info.email
                     # query the transactions and then find everything inside
                 }
                 return render(request,'account.html',user)
@@ -84,13 +84,13 @@ def forgotpassword(request):
 # should the person be able to change their pin with or without their old pin
 
         if User.objects.filter(username = username).exists():
-            customerbankinfo = User.objects.get(username = username)
-            if customerbankinfo.first_name == first_name and customerbankinfo.last_name == last_name and customerbankinfo.email == email:# personal info is correct
-                is_password_correct = check_password(pin_number, customerbankinfo.password)
+            customer_bank_info = User.objects.get(username = username)
+            if customer_bank_info.first_name == first_name and customer_bank_info.last_name == last_name and customer_bank_info.email == email:# personal info is correct
+                is_password_correct = check_password(pin_number, customer_bank_info.password)
                 if is_password_correct == True:#password is correct
                     if pin_number != new_pin_number:
-                        customerbankinfo.set_password(new_pin_number)
-                        customerbankinfo.save()
+                        customer_bank_info.set_password(new_pin_number)
+                        customer_bank_info.save()
                         user = {
                             "response":"Your new pin number has been created"
                         }
@@ -119,11 +119,19 @@ def forgotpassword(request):
 
 def account(request):
     userid = request.session['userid']
-    customerbankinfo = User.objects.get(id = userid)
+    customer_bank_info = User.objects.get(id = userid)
+    customer_transactions = Transactions.objects.filter(account = customer_bank_info.id)
+    customer_amount = 0
+    for transactions in customer_transactions:
+        if transactions.transactiontype == "deposit":
+            customer_amount = customer_amount + transactions.amount
+        if transactions.transactiontype == "withdraw":
+            customer_amount = customer_amount - transactions.amount
     user = {
-    "firstname":customerbankinfo.first_name,
-    "lastname":customerbankinfo.last_name,
-    "email":customerbankinfo.email
+    "firstname":customer_bank_info.first_name,
+    "lastname":customer_bank_info.last_name,
+    "email":customer_bank_info.email,
+    "money": customer_amount
     }
     return render(request,'account.html', user)
 
@@ -132,11 +140,11 @@ def changeaccountinfo(request):
 
 def changemoney(request):
     userid = request.session['userid']
-    customerbankinfo = User.objects.get(id = userid)
+    customer_bank_info = User.objects.get(id = userid)
     if request.method == "POST":
-        transactiontype = request.POST.get('transactiontype')
+        transaction_type = request.POST.get('transactiontype')
         amount = request.POST.get('amount')
-        newtransaction = Transactions(transactiontype = transactiontype, amount = amount, account = customerbankinfo)
+        newtransaction = Transactions(transactiontype = transaction_type, amount = amount, account = customer_bank_info)
         newtransaction.save()
         user = {
                     "response":"Your transaction has been made"

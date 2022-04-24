@@ -12,9 +12,11 @@
   <li>{{firstname}} {{lastname}}</li>
   <li>{{email}}</li>
 
-  <h1>You currently have [money] dollars in your account</h1>
+  <h1>You currently have {{money}} dollars in your account</h1>
   <a href="{% url 'changeaccountinfo' %}">Click here to change your personal info</a>
   <a href="{% url 'changemoney' %}">Click here to make a transaction</a>
 </body>
 </center>
 </html>
+
+<!-- I want the left side to have the all current stuff but then the right side would have a table of transactions the account has -->
