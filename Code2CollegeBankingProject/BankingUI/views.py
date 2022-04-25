@@ -122,16 +122,20 @@ def account(request):
     customer_bank_info = User.objects.get(id = userid)
     customer_transactions = Transactions.objects.filter(account = customer_bank_info.id)
     customer_amount = 0
+    date_transaction_type_amount = []
     for transactions in customer_transactions:
         if transactions.transactiontype == "deposit":
             customer_amount = customer_amount + transactions.amount
         if transactions.transactiontype == "withdraw":
             customer_amount = customer_amount - transactions.amount
+        date_transaction_type_amount.append(transactions)
+        # date_transaction_type_amount.append([transactions.date,transactions.transactiontype,transactions.amount])
     user = {
     "firstname":customer_bank_info.first_name,
     "lastname":customer_bank_info.last_name,
     "email":customer_bank_info.email,
-    "money": customer_amount
+    "money": customer_amount,
+    "transactions": date_transaction_type_amount
     }
     return render(request,'account.html', user)
 

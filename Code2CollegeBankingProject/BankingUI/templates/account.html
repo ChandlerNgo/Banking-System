@@ -5,18 +5,39 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <title>{{firstname}}'s account</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'BankingUI/account.css' %}">
 </head>
-<center>
 <body>
-  <li>{{firstname}} {{lastname}}</li>
-  <li>{{email}}</li>
+  <div class="page">
+    <div class="leftside">
+      <li>{{firstname}} {{lastname}}</li>
+      <li>{{email}}</li>
+      <h1>You currently have {{money}} dollars in your account</h1>
+      <a href="{% url 'changeaccountinfo' %}">Click here to change your personal info</a>
+      <a href="{% url 'changemoney' %}">Click here to make a transaction</a>
+    </div>
+    <div class="rightside">
+      <table>
+        <tr>
+          <td>Date</td>
+          <td>Transaction Type</td>
+          <td>Amount</td>
+        </tr>
+      </table>
+      {% for transaction in transactions %}
+        <tr>
+          <td>{{transaction.date}}</td>
+          <td>{{transaction.transactiontype}}</td>
+          <td>{{transaction.amount}}</td>
+        </tr>
+      {% endfor %}
+    </div>
+  </div>
+  
 
-  <h1>You currently have {{money}} dollars in your account</h1>
-  <a href="{% url 'changeaccountinfo' %}">Click here to change your personal info</a>
-  <a href="{% url 'changemoney' %}">Click here to make a transaction</a>
+  
 </body>
-</center>
 </html>
 
 <!-- I want the left side to have the all current stuff but then the right side would have a table of transactions the account has -->
