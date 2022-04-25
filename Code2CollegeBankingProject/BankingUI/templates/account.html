@@ -10,28 +10,40 @@
 </head>
 <body>
   <div class="page">
-    <div class="leftside">
-      <li>{{firstname}} {{lastname}}</li>
-      <li>{{email}}</li>
-      <h1>You currently have {{money}} dollars in your account</h1>
-      <a href="{% url 'changeaccountinfo' %}">Click here to change your personal info</a>
-      <a href="{% url 'changemoney' %}">Click here to make a transaction</a>
+    <div class="topbar">
+      <h2>{{firstname}} {{lastname}}: ${{money}}</h2>
+      <div class="navbutton">
+        <form action="{% url 'changeaccountinfo' %}">
+          <button type="submit" value="changeaccountinfo">Change Info</button>
+        </form>
+
+        <form action="{% url 'changemoney' %}">
+          <button type="submit" value="changemoney">Make a transaction</button>
+        </form>
+
+        <form action="{% url 'index' %}">
+          <button type="submit" value="index">Log Out</button>
+        </form>
+      </div>
+        
+      
     </div>
-    <div class="rightside">
+    <div class="bottomtable">
       <table>
-        <tr>
-          <td>Date</td>
-          <td>Transaction Type</td>
-          <td>Amount</td>
+        <tr class="title">
+          <td><h1>Date</h1></td>
+          <td><h1>Transaction Type</h1></td>
+          <td><h1>Amount</h1></td>
         </tr>
-      </table>
       {% for transaction in transactions %}
         <tr>
           <td>{{transaction.date}}</td>
           <td>{{transaction.transactiontype}}</td>
           <td>{{transaction.amount}}</td>
         </tr>
-      {% endfor %}
+      {% endfor %}  
+      </table>
+      
     </div>
   </div>
   

@@ -16,14 +16,34 @@ def index(request):
             customer_bank_info = User.objects.get(username = username)
             is_password_correct = check_password(pin_number, customer_bank_info.password)
             if is_password_correct == True:
+
+                # account(request)
+
                 request.session['userid'] = customer_bank_info.id
+                userid = request.session['userid'] = customer_bank_info.id
+                customer_bank_info = User.objects.get(id = userid)
+                customer_transactions = Transactions.objects.filter(account = customer_bank_info.id)
+                customer_amount = 0
+                date_transaction_type_amount = []
+                for transactions in customer_transactions:
+                    if transactions.transactiontype == "Deposit":
+                        customer_amount = customer_amount + transactions.amount
+                    if transactions.transactiontype == "Withdraw":
+                        customer_amount = customer_amount - transactions.amount
+                    date_transaction_type_amount.append(transactions)
+                    # date_transaction_type_amount.append([transactions.date,transactions.transactiontype,transactions.amount])
                 user = {
-                    "firstname":customer_bank_info.first_name,
-                    "lastname":customer_bank_info.last_name,
-                    "email":customer_bank_info.email
-                    # query the transactions and then find everything inside
+                "firstname":customer_bank_info.first_name,
+                "lastname":customer_bank_info.last_name,
+                "email":customer_bank_info.email,
+                "money": customer_amount,
+                "transactions": date_transaction_type_amount
                 }
-                return render(request,'account.html',user)
+                return render(request,'account.html', user)
+
+                # 
+
+                
             else:
                 user = {
                 "response":"The password is not correct"
@@ -124,9 +144,9 @@ def account(request):
     customer_amount = 0
     date_transaction_type_amount = []
     for transactions in customer_transactions:
-        if transactions.transactiontype == "deposit":
+        if transactions.transactiontype == "Deposit":
             customer_amount = customer_amount + transactions.amount
-        if transactions.transactiontype == "withdraw":
+        if transactions.transactiontype == "Withdraw":
             customer_amount = customer_amount - transactions.amount
         date_transaction_type_amount.append(transactions)
         # date_transaction_type_amount.append([transactions.date,transactions.transactiontype,transactions.amount])
@@ -182,11 +202,11 @@ def changemoney(request):
         customer_transactions = Transactions.objects.filter(account = customer_bank_info.id)
         customer_amount = 0
         for transactions in customer_transactions:
-            if transactions.transactiontype == "deposit":
+            if transactions.transactiontype == "Deposit":
                 customer_amount = customer_amount + transactions.amount
-            if transactions.transactiontype == "withdraw":
+            if transactions.transactiontype == "Withdraw":
                 customer_amount = customer_amount - transactions.amount
-        if transaction_type == 'withdraw' and customer_amount - int(amount) < 0:
+        if transaction_type == 'Withdraw' and customer_amount - int(amount) < 0:
             user = {
                     "response":"You do not have enough money in your account"
                 }
