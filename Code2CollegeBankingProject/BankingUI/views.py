@@ -228,3 +228,21 @@ def changemoney(request):
 
 def todo(request):
     return render(request,'todo.html')
+
+def deleteaccount(request):
+    userid = request.session['userid']
+    customer_bank_info = User.objects.get(id = userid)
+    pin_number = request.POST.get('pinnumber')
+    if request.method == "POST":
+        if check_password(pin_number, customer_bank_info.password):
+            user = {
+                        "response":"Your account has been deleted.. along with all your money"
+            }
+            customer_bank_info.delete()
+            return render(request,'index.html',user)
+        else:
+            user = {
+                        "response":"Your pin number is not right"
+            }
+            return render(request,'deleteaccount.html',user)
+    return render(request,'deleteaccount.html')

@@ -13,6 +13,10 @@
     <div class="topbar">
       <h2>{{firstname}} {{lastname}}: ${{money}}</h2>
       <div class="navbutton">
+        <form action="{% url 'deleteaccount' %}">
+          <button type="submit" value="deleteaccount">Delete Your Account</button>
+        </form>
+
         <form action="{% url 'changeaccountinfo' %}">
           <button type="submit" value="changeaccountinfo">Change Info</button>
         </form>
@@ -35,6 +39,7 @@
           <td><h1>Transaction Type</h1></td>
           <td><h1>Amount</h1></td>
         </tr>
+        <tr><td></td><td></td><td></td></tr>
       {% for transaction in transactions %}
         <tr>
           <td>{{transaction.date}}</td>
