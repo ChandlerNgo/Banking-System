@@ -1,59 +1,38 @@
-from http.client import HTTPS_PORT
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import redirect, render
 from .models import Transactions
-from django.db.utils import IntegrityError
-from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import check_password
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     if request.method == "POST":
         username = request.POST["username"]
         pin_number = request.POST["pinnumber"]
-
-        if User.objects.filter(username = username).exists():
-            customer_bank_info = User.objects.get(username = username)
-            is_password_correct = check_password(pin_number, customer_bank_info.password)
-            if is_password_correct == True:
-
-                # account(request)
-
-                request.session['userid'] = customer_bank_info.id
-                userid = request.session['userid'] = customer_bank_info.id
-                customer_bank_info = User.objects.get(id = userid)
-                customer_transactions = Transactions.objects.filter(account = customer_bank_info.id)
-                customer_amount = 0
-                date_transaction_type_amount = []
-                for transactions in customer_transactions:
-                    if transactions.transactiontype == "Deposit":
-                        customer_amount = customer_amount + transactions.amount
-                    if transactions.transactiontype == "Withdraw":
-                        customer_amount = customer_amount - transactions.amount
-                    date_transaction_type_amount.append(transactions)
-                    # date_transaction_type_amount.append([transactions.date,transactions.transactiontype,transactions.amount])
-                user = {
-                "firstname":customer_bank_info.first_name,
-                "lastname":customer_bank_info.last_name,
-                "email":customer_bank_info.email,
-                "money": customer_amount,
-                "transactions": date_transaction_type_amount
-                }
-                return render(request,'account.html', user)
-
-                # 
-
-                
-            else:
-                user = {
-                "response":"The password is not correct"
-                }
-                return render(request,'index.html',user)
-        else:
-            user = {
-                "response":"This username doesn't exist"
+        user = authenticate(request, username=username, password=pin_number)
+        if user is not None:#user exists
+            login(request,user)
+            customer_transactions = Transactions.objects.filter(account = user.id)
+            customer_amount = 0
+            for transactions in customer_transactions:
+                if transactions.transactiontype == "Deposit":
+                    customer_amount = customer_amount + transactions.amount
+                if transactions.transactiontype == "Withdraw":
+                    customer_amount = customer_amount - transactions.amount
+            userinfo = {
+            "firstname":user.first_name,
+            "lastname":user.last_name,
+            "email":user.email,
+            "money": customer_amount,
+            "transactions": customer_transactions
             }
-            return render(request,'index.html',user)
+            # return redirect('account.html', userinfo) Had a error so didn't use the redirect thingy
+            return render(request,'account.html',userinfo)
+        else:
+            userinfo = {
+                "response":"Your login information is incorrect"
+                }
+            return render(request,'index.html',userinfo)
     return render(request,'index.html')
 
 def createaccount(request):
@@ -64,30 +43,31 @@ def createaccount(request):
         username = request.POST["username"]
         pinnumber = request.POST["pinnumber"]
         # check if user/email is unique then create user
-        if User.objects.filter(email = email).exists() == True:
-            user = {
+        if User.objects.filter(email = email).exists():
+            userinfo = {
                 "response":"This email has been used already"
             }
-            return render(request,'createaccount.html',user)
-        elif User.objects.filter(username = username).exists() == True:
-            user = {
+            return render(request,'createaccount.html',userinfo)
+        elif User.objects.filter(username = username).exists():
+            userinfo = {
                 "response":"This username has been used already"
             }
-            return render(request,'createaccount.html',user)
+            return render(request,'createaccount.html',userinfo)
         else:
             newcustomer = User.objects.create_user(username = username, email = email, password = pinnumber)
             newcustomer.first_name = first_name
             newcustomer.last_name = last_name
             newcustomer.save()
-            user = {
+            userinfo = {
                 "response":"Your bank account has been created"
             }
-        return render(request,'createaccount.html',user)
+        return render(request,'createaccount.html',userinfo)
 
         
 
     return render(request,'createaccount.html')
 
+@login_required(redirect_field_name='index')
 def forgotpassword(request):
     if request.method == "POST":
         first_name = request.POST["firstname"]
@@ -107,121 +87,113 @@ def forgotpassword(request):
             customer_bank_info = User.objects.get(username = username)
             if customer_bank_info.first_name == first_name and customer_bank_info.last_name == last_name and customer_bank_info.email == email:# personal info is correct
                 is_password_correct = check_password(pin_number, customer_bank_info.password)
-                if is_password_correct == True:#password is correct
+                if is_password_correct:#password is correct
                     if pin_number != new_pin_number:
                         customer_bank_info.set_password(new_pin_number)
                         customer_bank_info.save()
-                        user = {
+                        userinfo = {
                             "response":"Your new pin number has been created"
                         }
-                        return render(request, 'forgotpassword.html', user)
+                        return render(request, 'forgotpassword.html', userinfo)
                     else:
-                        user = {
+                        userinfo = {
                             "response":"Your pin number is the same as the new password"
                         }
-                        return render(request, 'forgotpassword.html', user)
+                        return render(request, 'forgotpassword.html', userinfo)
                 else:
-                    user = {
-                            "response":"Your pin number is not correct"
+                    userinfo = {
+                            "response":"One of your fields is not correct"
                         }
-                    return render(request, 'forgotpassword.html', user)
+                    return render(request, 'forgotpassword.html', userinfo)
             else:
-                user = {
+                userinfo = {
                     "response":"One of your fields is not correct"
                 }
-                return render(request, 'forgotpassword.html', user)
+                return render(request, 'forgotpassword.html', userinfo)
         else:
-            user = {
+            userinfo = {
                     "response":"This username doesn't exist"
                 }
-            return render(request, 'forgotpassword.html', user)
+            return render(request, 'forgotpassword.html', userinfo)
     return render(request,'forgotpassword.html')
 
+@login_required(redirect_field_name='index')
 def account(request):
-    userid = request.session['userid']
-    customer_bank_info = User.objects.get(id = userid)
-    customer_transactions = Transactions.objects.filter(account = customer_bank_info.id)
+    customer_transactions = Transactions.objects.filter(account = user.id)
     customer_amount = 0
-    date_transaction_type_amount = []
     for transactions in customer_transactions:
         if transactions.transactiontype == "Deposit":
-            customer_amount = customer_amount + transactions.amount
+            customer_amount += transactions.amount
         if transactions.transactiontype == "Withdraw":
-            customer_amount = customer_amount - transactions.amount
-        date_transaction_type_amount.append(transactions)
-        # date_transaction_type_amount.append([transactions.date,transactions.transactiontype,transactions.amount])
-    user = {
-    "firstname":customer_bank_info.first_name,
-    "lastname":customer_bank_info.last_name,
-    "email":customer_bank_info.email,
+            customer_amount -= transactions.amount
+    userinfo = {
+    "firstname":user.first_name,
+    "lastname":user.last_name,
+    "email":user.email,
     "money": customer_amount,
-    "transactions": date_transaction_type_amount
+    "transactions": customer_transactions
     }
-    return render(request,'account.html', user)
+    return render(request,'account.html', userinfo)
 
+@login_required(redirect_field_name='index')
 def changeaccountinfo(request):
-    userid = request.session['userid']
-    customer_bank_info = User.objects.get(id = userid)
     if request.method == "POST":
         first_name = request.POST["firstname"]
         last_name = request.POST["lastname"]
         email = request.POST["email"]
         username = request.POST["username"]
-        if User.objects.filter(username = username).exists() == False or customer_bank_info.username == username:#if the username doensn't exist
-            if User.objects.filter(email = email).exists() == False or customer_bank_info.email == email:#if the email doensn't exist
-                customer_bank_info.first_name = first_name
-                customer_bank_info.last_name = last_name
-                customer_bank_info.email = email
-                customer_bank_info.username = username
-                customer_bank_info.save()
-                user = {
-                    "title":customer_bank_info.username,
+        if not User.objects.filter(username = username).exists() or user.username == username:#if the username doensn't exist
+            if not User.objects.filter(email = email).exists() or user.email == email:#if the email doensn't exist
+                user.first_name = first_name
+                user.last_name = last_name
+                user.email = email
+                user.username = username
+                user.save()
+                userinfo = {
+                    "title":user.first_name,
                     "response":"Your new information has been saved"
                 }
-                return render(request,'changeaccountinfo.html',user)
+                return render(request,'changeaccountinfo.html',userinfo)
             else:
-                user = {
-                    "title":customer_bank_info.username,
+                userinfo = {
+                    "title":user.first_name,
                     "response":"The email is already in use"
                 }
-                return render(request,'changeaccountinfo.html',user)
+                return render(request,'changeaccountinfo.html',userinfo)
         else:
-            user = {
-                "title":customer_bank_info.username,
+            userinfo = {
+                "title":user.first_name,
                 "response":"The username is already in use"
             }
-            return render(request,'changeaccountinfo.html',user)
-    user = {
-            "title":customer_bank_info.first_name
+            return render(request,'changeaccountinfo.html',userinfo)
+    userinfo = {
+            "title":user.first_name
         }
-    return render(request,'changeaccountinfo.html',user)
+    return render(request,'changeaccountinfo.html',userinfo)
 
+@login_required(redirect_field_name='index')
 def changemoney(request):
-    userid = request.session['userid']
-    customer_bank_info = User.objects.get(id = userid)
     if request.method == "POST":
         transaction_type = request.POST.get('transactiontype')
         amount = request.POST.get('amount')
-
-
-        customer_transactions = Transactions.objects.filter(account = customer_bank_info.id)
+        customer_transactions = Transactions.objects.filter(account = user.id)
         customer_amount = 0
         for transactions in customer_transactions:
             if transactions.transactiontype == "Deposit":
-                customer_amount = customer_amount + transactions.amount
+                customer_amount += transactions.amount
             if transactions.transactiontype == "Withdraw":
-                customer_amount = customer_amount - transactions.amount
+                customer_amount -= transactions.amount
         if transaction_type == 'Withdraw' and customer_amount - int(amount) < 0:
-            user = {
+            userinfo = {
                     "response":"You do not have enough money in your account"
                 }
-            return render(request, 'changemoney.html', user)
-        newtransaction = Transactions(transactiontype = transaction_type, amount = amount, account = customer_bank_info)
+            return render(request, 'changemoney.html', userinfo)
+        newtransaction = Transactions(transactiontype = transaction_type, amount = amount, account = user)
         newtransaction.save()
-        user = {
+        userinfo = {
                     "response":"Your transaction has been made"
                 }
-        return render(request, 'changemoney.html', user)
+        return render(request, 'changemoney.html', userinfo)
     return render(request,'changemoney.html')
 
 # add required field into the end of html forms after testing
@@ -229,20 +201,24 @@ def changemoney(request):
 def todo(request):
     return render(request,'todo.html')
 
+@login_required(redirect_field_name='index')
 def deleteaccount(request):
-    userid = request.session['userid']
-    customer_bank_info = User.objects.get(id = userid)
     pin_number = request.POST.get('pinnumber')
     if request.method == "POST":
-        if check_password(pin_number, customer_bank_info.password):
-            user = {
-                        "response":"Your account has been deleted.. along with all your money"
+        if check_password(pin_number, user.password):
+            userinfo = {
+                "response":"Your account has been deleted.. along with all your money"
             }
-            customer_bank_info.delete()
-            return render(request,'index.html',user)
+            user.delete()
+            return render(request,'index.html',userinfo)
         else:
-            user = {
-                        "response":"Your pin number is not right"
+            userinfo = {
+                "response":"Your pin number is not right"
             }
-            return render(request,'deleteaccount.html',user)
+            return render(request,'deleteaccount.html',userinfo)
     return render(request,'deleteaccount.html')
+
+def logout(request):
+    return render(request, 'logout.html')
+
+    # finish logout work
