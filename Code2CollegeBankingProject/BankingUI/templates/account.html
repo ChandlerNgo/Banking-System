@@ -25,7 +25,7 @@
           <button type="submit" value="changemoney">Make a transaction</button>
         </form>
 
-        <form action="{% url 'index' %}">
+        <form action="{% url 'logout' %}">
           <button type="submit" value="index">Log Out</button>
         </form>
       </div>
@@ -35,9 +35,10 @@
     <div class="bottomtable">
       <table>
         <tr class="title">
-          <td><h1>Date</h1></td>
+          <td><h1>Date & Time</h1></td>
           <td><h1>Transaction Type</h1></td>
           <td><h1>Amount</h1></td>
+          <td><h1>Balance</h1></td>
         </tr>
         <tr><td></td><td></td><td></td></tr>
       {% for transaction in transactions %}
@@ -45,8 +46,9 @@
           <td>{{transaction.date}}</td>
           <td>{{transaction.transactiontype}}</td>
           <td>{{transaction.amount}}</td>
+          <td>{{balance}}</td>
         </tr>
-      {% endfor %}  
+      {% endfor %}
       </table>
       
     </div>

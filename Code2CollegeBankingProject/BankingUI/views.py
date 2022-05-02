@@ -6,7 +6,6 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.decorators import login_required
 
-
 def index(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -29,11 +28,11 @@ def index(request):
             # "transactions": customer_transactions
             # }
             return redirect(account)
-            # return render(request,'account.html',userinfo)
+            # return redirect(request,'account.html',userinfo)
         else:
             userinfo = {"response": "Your login information is incorrect"}
-            return render(request, "index.html", userinfo)
-    return render(request, "index.html")
+            return render(request,"index.html",userinfo)
+    return render(request,"index.html")
 
 
 def createaccount(request):
@@ -59,8 +58,7 @@ def createaccount(request):
             newcustomer.save()
             userinfo = {"response": "Your bank account has been created"}
         return render(request, "createaccount.html", userinfo)
-
-    return render(request, "createaccount.html")
+    return render(request,"createaccount.html")
 
 
 @login_required(redirect_field_name="index")
@@ -93,7 +91,7 @@ def forgotpassword(request):
                     if pin_number != new_pin_number:
                         customer_bank_info.set_password(new_pin_number)
                         customer_bank_info.save()
-                        userinfo = {"response": "Your new pin number has been created"}
+                        userinfo = {"response": "Your pin has been changed"}
                         return render(request, "forgotpassword.html", userinfo)
                     else:
                         userinfo = {
@@ -109,26 +107,32 @@ def forgotpassword(request):
         else:
             userinfo = {"response": "This username doesn't exist"}
             return render(request, "forgotpassword.html", userinfo)
-    return render(request, "forgotpassword.html")
+    return render(request,"forgotpassword.html")
 
 
 @login_required(redirect_field_name="index")
 def account(request):
     customer_transactions = Transactions.objects.filter(account=request.user.id)
     customer_amount = 0
-    for transactions in customer_transactions:
-        if transactions.transactiontype == "Deposit":
-            customer_amount += transactions.amount
-        if transactions.transactiontype == "Withdraw":
-            customer_amount -= transactions.amount
+    balance = []
+    i = 0
+    for transaction in customer_transactions:
+        if transaction.transactiontype == "Deposit":
+            customer_amount += transaction.amount
+        if transaction.transactiontype == "Withdraw":
+            customer_amount -= transaction.amount
+        balance.append(customer_amount)
+        i += 1
+        
     userinfo = {
         "firstname": request.user.first_name,
         "lastname": request.user.last_name,
         "email": request.user.email,
         "money": customer_amount,
         "transactions": customer_transactions,
+        "balance":balance
     }
-    return render(request, "account.html", userinfo)
+    return render(request,"account.html", userinfo)
 
 
 @login_required(redirect_field_name="index")
@@ -155,21 +159,21 @@ def changeaccountinfo(request):
                     "title": request.user.first_name,
                     "response": "Your new information has been saved",
                 }
-                return render(request, "changeaccountinfo.html", userinfo)
+                return redirect(changeaccountinfo, userinfo)
             else:
                 userinfo = {
                     "title": request.user.first_name,
                     "response": "The email is already in use",
                 }
-                return render(request, "changeaccountinfo.html", userinfo)
+                return redirect(changeaccountinfo, userinfo)
         else:
             userinfo = {
                 "title": request.user.first_name,
                 "response": "The username is already in use",
             }
-            return render(request, "changeaccountinfo.html", userinfo)
+            return redirect(changeaccountinfo, userinfo)
     userinfo = {"title": request.user.first_name}
-    return render(request, "changeaccountinfo.html", userinfo)
+    return render(request,"changeaccountinfo.html", userinfo)
 
 
 @login_required(redirect_field_name="index")
@@ -188,22 +192,17 @@ def changemoney(request):
                 customer_amount -= transactions.amount
         if transaction_type == "Withdraw" and customer_amount - int(amount) < 0:
             userinfo = {"response": "You do not have enough money in your account"}
-            return render(request, "changemoney.html", userinfo)
+            return redirect(changemoney, userinfo)
         newtransaction = Transactions(
             transactiontype=transaction_type, amount=amount, account=request.user
         )
         newtransaction.save()
         userinfo = {"response": "Your transaction has been made"}
-        return render(request, "changemoney.html", userinfo)
-    return render(request, "changemoney.html")
-
+        return redirect(changemoney, userinfo)
+    return render(request,"changemoney.html")
+# https://stackoverflow.com/questions/39560175/redirect-to-same-page-after-post-method-using-class-based-views
 
 # add required field into the end of html forms after testing
-
-
-def todo(request):
-    return render(request, "todo.html")
-
 
 @login_required(redirect_field_name="index")
 def deleteaccount(request):
@@ -214,14 +213,15 @@ def deleteaccount(request):
                 "response": "Your account has been deleted.. along with all your money"
             }
             request.user.delete()
-            return render(request, "index.html", userinfo)
+            return redirect(index, userinfo)
         else:
             userinfo = {"response": "Your pin number is not right"}
-            return render(request, "deleteaccount.html", userinfo)
-    return render(request, "deleteaccount.html")
+            return redirect(deleteaccount, userinfo)
+    return render(request,"deleteaccount.html")
 
 
 def logout(request):
-    return render(request, "logout.html")
+    logout()
+    return redirect(index)
 
     # finish logout work

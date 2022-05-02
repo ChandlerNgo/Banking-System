@@ -10,4 +10,5 @@ urlpatterns = [
     path("changemoney", views.changemoney, name="changemoney"),
     path("changeaccountinfo", views.changeaccountinfo, name="changeaccountinfo"),
     path("deleteaccount", views.deleteaccount, name="deleteaccount"),
+    path("logout", views.logout, name="logout"),
 ]
