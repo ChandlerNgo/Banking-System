@@ -4,3 +4,4 @@ Code2CollegeBankingProject/BankingUI/migrations
 __pycache__/
 migrations/
 db.dqlite3
+.env
