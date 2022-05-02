@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from .models import Transactions
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.decorators import login_required
 
@@ -61,7 +62,6 @@ def createaccount(request):
     return render(request,"createaccount.html")
 
 
-@login_required(redirect_field_name="index")
 def forgotpassword(request):
     if request.method == "POST":
         first_name = request.POST["firstname"]
@@ -110,7 +110,7 @@ def forgotpassword(request):
     return render(request,"forgotpassword.html")
 
 
-@login_required(redirect_field_name="index")
+@login_required(login_url='/BankingUI/index')
 def account(request):
     customer_transactions = Transactions.objects.filter(account=request.user.id)
     customer_amount = 0
@@ -135,7 +135,7 @@ def account(request):
     return render(request,"account.html", userinfo)
 
 
-@login_required(redirect_field_name="index")
+@login_required(login_url='/BankingUI/index')
 def changeaccountinfo(request):
     if request.method == "POST":
         first_name = request.POST["firstname"]
@@ -159,24 +159,26 @@ def changeaccountinfo(request):
                     "title": request.user.first_name,
                     "response": "Your new information has been saved",
                 }
-                return redirect(changeaccountinfo, userinfo)
+                return render(request,"changeaccountinfo.html", userinfo)
             else:
                 userinfo = {
                     "title": request.user.first_name,
                     "response": "The email is already in use",
                 }
-                return redirect(changeaccountinfo, userinfo)
+                return render(request,"changeaccountinfo.html", userinfo)
         else:
             userinfo = {
                 "title": request.user.first_name,
                 "response": "The username is already in use",
             }
-            return redirect(changeaccountinfo, userinfo)
-    userinfo = {"title": request.user.first_name}
+            return render(request,"changeaccountinfo.html", userinfo)
+    userinfo = {
+        "title": request.user.first_name
+    }
     return render(request,"changeaccountinfo.html", userinfo)
 
 
-@login_required(redirect_field_name="index")
+@login_required(login_url='/BankingUI/index')
 def changemoney(request):
     if request.method == "POST":
         transaction_type = request.POST.get("transactiontype")
@@ -192,19 +194,19 @@ def changemoney(request):
                 customer_amount -= transactions.amount
         if transaction_type == "Withdraw" and customer_amount - int(amount) < 0:
             userinfo = {"response": "You do not have enough money in your account"}
-            return redirect(changemoney, userinfo)
+            return render(request, "changemoney.html", userinfo)
         newtransaction = Transactions(
             transactiontype=transaction_type, amount=amount, account=request.user
         )
         newtransaction.save()
         userinfo = {"response": "Your transaction has been made"}
-        return redirect(changemoney, userinfo)
+        return render(request, "changemoney.html", userinfo)
     return render(request,"changemoney.html")
 # https://stackoverflow.com/questions/39560175/redirect-to-same-page-after-post-method-using-class-based-views
 
 # add required field into the end of html forms after testing
 
-@login_required(redirect_field_name="index")
+@login_required(login_url='/BankingUI/index')
 def deleteaccount(request):
     pin_number = request.POST.get("pinnumber")
     if request.method == "POST":
@@ -216,12 +218,10 @@ def deleteaccount(request):
             return redirect(index, userinfo)
         else:
             userinfo = {"response": "Your pin number is not right"}
-            return redirect(deleteaccount, userinfo)
+            return render(request, "deleteaccount.html", userinfo)
     return render(request,"deleteaccount.html")
 
 
-def logout(request):
-    logout()
+def logout_view(request):
+    logout(request)
     return redirect(index)
-
-    # finish logout work

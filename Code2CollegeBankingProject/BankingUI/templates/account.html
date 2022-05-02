@@ -25,7 +25,7 @@
           <button type="submit" value="changemoney">Make a transaction</button>
         </form>
 
-        <form action="{% url 'logout' %}">
+        <form action="{% url 'logout_view' %}">
           <button type="submit" value="index">Log Out</button>
         </form>
       </div>
@@ -42,12 +42,14 @@
         </tr>
         <tr><td></td><td></td><td></td></tr>
       {% for transaction in transactions %}
+      {% with counter=forloop.counter0 %}
         <tr>
           <td>{{transaction.date}}</td>
           <td>{{transaction.transactiontype}}</td>
           <td>{{transaction.amount}}</td>
-          <td>{{balance}}</td>
+          <td>{{balance.counter}}</td> <!--convert str to int -->
         </tr>
+      {% endwith %}
       {% endfor %}
       </table>
       
