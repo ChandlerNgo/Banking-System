@@ -209,11 +209,8 @@ def deleteaccount(request):
     pin_number = request.POST.get("pinnumber")
     if request.method == "POST":
         if check_password(pin_number, request.user.password):
-            userinfo = {
-                "response": "Your account has been deleted.. along with all your money"
-            }
             request.user.delete()
-            return redirect(index, userinfo)
+            return redirect(index)
         else:
             userinfo = {"response": "Your pin number is not right"}
             return render(request, "deleteaccount.html", userinfo)
