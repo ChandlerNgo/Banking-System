@@ -113,24 +113,22 @@ def forgotpassword(request):
 @login_required(login_url='/BankingUI/index')
 def account(request):
     customer_transactions = Transactions.objects.filter(account=request.user.id)
-    customer_amount = 0
-    balance = []
-    i = 0
+    balance = 0
+
     for transaction in customer_transactions:
+        transaction.balance = balance
         if transaction.transactiontype == "Deposit":
-            customer_amount += transaction.amount
+            balance += transaction.amount
         if transaction.transactiontype == "Withdraw":
-            customer_amount -= transaction.amount
-        balance.append(customer_amount)
-        i += 1
+            balance -= transaction.amount
+        transaction.balance = balance
         
     userinfo = {
         "firstname": request.user.first_name,
         "lastname": request.user.last_name,
         "email": request.user.email,
-        "money": customer_amount,
+        "money": balance,
         "transactions": customer_transactions,
-        "balance":balance
     }
     return render(request,"account.html", userinfo)
 
@@ -187,11 +185,11 @@ def changemoney(request):
             account=request.user.id
         )  # user is not recognized
         customer_amount = 0
-        for transactions in customer_transactions:
-            if transactions.transactiontype == "Deposit":
-                customer_amount += transactions.amount
-            if transactions.transactiontype == "Withdraw":
-                customer_amount -= transactions.amount
+        for transaction in customer_transactions:
+            if transaction.transactiontype == "Deposit":
+                customer_amount += transaction.amount
+            if transaction.transactiontype == "Withdraw":
+                customer_amount -= transaction.amount
         if transaction_type == "Withdraw" and customer_amount - int(amount) < 0:
             userinfo = {"response": "You do not have enough money in your account"}
             return render(request, "changemoney.html", userinfo)
