@@ -1,0 +1,7 @@
+Code2CollegeBankingProject/db.sqlite3
+Code2CollegeBankingProject/BankingUI/__pycache__
+Code2CollegeBankingProject/BankingUI/migrations
+__pycache__/
+migrations/
+db.dqlite3
+.env

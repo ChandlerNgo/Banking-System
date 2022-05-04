@@ -1,23 +1,13 @@
 from http.cookiejar import DefaultCookiePolicy
 from django.db import models
+from django.contrib.auth.models import User
 
-# Create your models here.
-class Customer(models.Model):
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    birthday = models.DateField()
-    email = models.EmailField()
+User._meta.get_field("email")._unique = True
+User._meta.get_field("username")._unique = True
 
-class BankInfo(models.Model):
-    pin_number = models.IntegerField()
-    username = models.CharField(max_length=30, unique=True)
-    password = models.CharField(max_length=30)
-    customer_info = models.ForeignKey(Customer,on_delete=models.CASCADE)
-    
+
 class Transactions(models.Model):
-    date = models.DateField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True)
     transactiontype = models.CharField(max_length=8)
-    amount = models.IntegerField()
-    account = models.ForeignKey(BankInfo, on_delete=models.CASCADE)
-    
-# ask will to tell me why you cant put all attributes in one table
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    account = models.ForeignKey(User, on_delete=models.CASCADE)

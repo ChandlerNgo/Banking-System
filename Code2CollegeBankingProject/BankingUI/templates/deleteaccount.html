@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>Banking Login</title>
+  <title>Delete Account</title>
   {% load static %}
   <link rel="stylesheet" type="text/css" href="{% static 'BankingUI/index.css' %}">
 </head>
@@ -15,23 +15,20 @@
   </div>
   <div class="loginbox">
     <div class="logintext">
-      <h1>Sign In</h1>
+      <h1>Enter Pin Number to Delete Account</h1>
     </div>
     <div class="forminput">
-      <input type="text" id="username" name="username" placeholder="Username" required></input>
-    </div>
-    <div class="forminput">
-      <input type="password" id="pinnumber" name="pinnumber" placeholder="Pin Number" required></input>
+      <input type="text" id="pinnumber" name="pinnumber" placeholder="Pin Number" required></input>
     </div>
     <div class="submit">
-      <button id="submit" type="submit">Sign In</button>
+      <button id="submit" type="submit">Delete Account</button>
       
     </div>
-    <center><a href="forgotpassword">{{response}}</a></center>
+    <center><p>{{response}}</p></center>
     </form>
     <div class="navbutton">
-      <form action="{% url 'createaccount' %}">
-        <button type="submit" value="createaccount">Create an account</button>
+      <form action="{% url 'account' %}">
+        <button type="submit" value="account">Return to home page</button>
       </form>
     </div>
   </div>

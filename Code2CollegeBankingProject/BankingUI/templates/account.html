@@ -4,17 +4,61 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>[users] account</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
+  <title>{{firstname}}'s account</title>
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'BankingUI/account.css' %}">
 </head>
-<center>
 <body>
-  <li>{{firstname}} {{lastname}}</li>
-  <li>{{email}}</li>
+  <div class="page">
+    <div class="topbar">
+      <h2>{{firstname}} {{lastname}}: ${{money}}</h2>
+      <div class="navbutton">
+        <form action="{% url 'deleteaccount' %}">
+          <button type="submit" value="deleteaccount">Delete Your Account</button>
+        </form>
+
+        <form action="{% url 'changeaccountinfo' %}">
+          <button type="submit" value="changeaccountinfo">Change Info</button>
+        </form>
+
+        <form action="{% url 'changemoney' %}">
+          <button type="submit" value="changemoney">Make a transaction</button>
+        </form>
+
+        <form action="{% url 'logout_view' %}">
+          <button type="submit" value="index">Log Out</button>
+        </form>
+      </div>
+        
+      
+    </div>
+    <div class="bottomtable">
+      <table>
+        <tr class="title">
+          <td><h1>Date & Time</h1></td>
+          <td><h1>Transaction Type</h1></td>
+          <td><h1>Amount</h1></td>
+          <td><h1>Balance</h1></td>
+        </tr>
+        <tr><td></td><td></td><td></td></tr>
+      {% for transaction in transactions %}
+      {% with counter=forloop.counter0 %}
+        <tr>
+          <td>{{transaction.date}}</td>
+          <td>{{transaction.transactiontype}}</td>
+          <td>{{transaction.amount}}</td>
+          <td>{{transaction.balance}}</td> <!--convert str to int -->
+        </tr>
+      {% endwith %}
+      {% endfor %}
+      </table>
+      
+    </div>
+  </div>
   
-  <h1>You currently have [money] dollars in your account</h1>
-  <a href="changeaccountinfo">Click here to change your personal info</a>
-  <a href="changemoney">click here to deposit/withdraw</a>
+
+  
 </body>
-</center>
 </html>
+
+<!-- I want the left side to have the all current stuff but then the right side would have a table of transactions the account has -->
