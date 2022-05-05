@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Changing {{title}}'s Info</title>
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'BankingUI/index.css' %}">
+</head>
+<center>
+<body>
+  <!-- 
+      edit and save.. sends back to account.html
+   -->
+   <form method="POST" action="">
+    {% csrf_token %}
+  <div class="topbar">
+    <h1>Chandler's Bank</h1>
+  </div>
+  <div class="loginbox">
+    <div class="logintext">
+      <h1>Change your Info</h1>
+    </div>
+    <div class="forminput">
+      <input type="text" id="firstname" name="firstname" placeholder="First Name" required></input></input>
+    </div>
+    <div class="forminput">
+      <input type="text" id="lastname" name="lastname" placeholder="Last Name" required></input></input>
+    </div>
+    <div class="forminput">
+      <input type="email" id="email" name="email" placeholder="Email" required></input>
+    </div>
+    <div class="forminput">
+      <input type="text" id="username" name="username" placeholder="Username" required></input>
+    </div>
+    <div class="submit">
+        <button id="submit" type="submit">Save Changes</button>
+    </div>
+  </form>
+    <center><p>{{response}}</p></center>
+    <div class="navbutton">
+      <form action="{% url 'account' %}">
+        <button type="submit" value="account">Return to home page</button>
+      </form>
+    </div>
+  </div>
+</body>
+</center>
+</html>

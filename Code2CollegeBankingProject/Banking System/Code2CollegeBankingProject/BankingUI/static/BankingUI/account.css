@@ -1,0 +1,70 @@
+body{
+  font-family: "Monaco", "Courier New", monospace;
+}
+
+button{
+  background-color: rgba(218, 149, 31, 0.641);
+  color: white;
+  margin-left:1vh;
+}
+
+button:disabled{
+  color:rgba(12, 11, 11, 0.729);
+  font-size: 0px;
+}
+
+button > a{
+  color:white;
+}
+
+.topbar{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+}
+.navbutton{
+  display:flex;
+  justify-content:end;
+}
+
+.navbutton > form{
+  display:flex;
+  align-content: center;
+}
+
+.navbutton > form > button{
+  background-color:rgba(218, 149, 31, 0.641);
+  border-color: rgba(218, 149, 31, 1);
+  color:black;
+}
+
+.bottomtable{
+  display:flex;
+  height: 90vh;
+  width:100%;
+  justify-content: center;
+  align-items: center;
+  margin-top:0;
+}
+
+table{
+  width:80%;
+  height:90%;
+  justify-content: center;
+  background-color: rgba(189, 133, 36, 0.641);
+  border: 2px solid rgb(218, 149, 31);
+  border-collapse:collapse;
+  text-align: center;
+  font-size: large;
+}
+
+td,tr{
+  border: 2px solid rgb(218, 149, 31);
+}
+
+h1{
+  margin:0;
+}
+
+.title{
+  height:5vh;
+}

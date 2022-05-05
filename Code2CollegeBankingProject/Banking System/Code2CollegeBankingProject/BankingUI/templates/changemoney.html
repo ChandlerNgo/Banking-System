@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Transaction</title>
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'BankingUI/index.css' %}">
+</head>
+<!-- <script>
+  function changetext(depositorwithdraw){
+    if(depositorwithdraw == 'deposit'){
+      document.getElementById('deposit').disabled = true;
+      document.getElementById('withdraw').disabled = false;
+    }
+    if(depositorwithdraw == 'withdraw'){
+      document.getElementById('deposit').disabled = false;
+      document.getElementById('withdraw').disabled = true;
+    }
+    // why does js have lower case bools but python have upper case :(
+  }
+</script> -->
+<body>
+  <form method="POST" action="">
+    {% csrf_token %}
+  <div class="topbar">
+    <h1>Chandler's Bank</h1>
+  </div>
+  <div class="loginbox">
+    <div class="logintext">
+      <h1>Would you like to deposit or withdraw money?</h1>
+    </div>
+    <div class="dropdown">
+      <center>
+        <select name="transactiontype">
+          <option value="Deposit">Deposit</option>
+          <option value="Withdraw">Withdraw</option>
+        </select>
+      </center>
+    </div>
+    <div class="forminput">
+      <input min="0.01" step="0.01"type="number" id="amount" name="amount" placeholder="Amount" required></input>
+    </div>
+    <center><p>{{response}}</p></center>
+    <div class="submit">
+        <button id="submit" type="submit">Deposit/withdraw your money</button>
+    </div>
+  </form>
+    <div class="navbutton">
+      <form action="{% url 'account' %}">
+        <button type="submit" value="account">Return to home page</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
