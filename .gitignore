@@ -5,3 +5,4 @@ __pycache__/
 migrations/
 db.dqlite3
 .env
+/node_modules
