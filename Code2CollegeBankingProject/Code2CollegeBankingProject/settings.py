@@ -34,9 +34,9 @@ if os.path.isfile(dotenv_file):
 SECRET_KEY = '1234' # Instead of your actual secret key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.herokuapp.com']
 
 
 # Application definition
