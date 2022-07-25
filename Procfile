@@ -1,1 +1,1 @@
-web: gunicorn BankingApp.wsgi
+web: gunicorn Code2CollegeBankingProject.wsgi
