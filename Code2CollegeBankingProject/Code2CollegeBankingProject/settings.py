@@ -42,7 +42,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'BankingUI.apps.BankinguiConfig',
+    'Code2CollegeBankingProject.BankingUI.apps.BankinguiConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
